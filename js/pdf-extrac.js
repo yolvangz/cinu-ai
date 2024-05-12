@@ -19,7 +19,6 @@ const databuffer = async () => {
 const read = async () =>{
     const info = await databuffer();
     const data = await pdf(info);
-    console.log(data.text);
     return data.text;
 }
 const chunk = async () => {
@@ -31,6 +30,7 @@ const chunk = async () => {
       let trozo = contenido.substring(i, i + tamano);
       chunks.push(trozo);
   }
-  console.log(chunks)
+  return (chunks)
 }
-chunk();
+
+module.exports = { chunk }
