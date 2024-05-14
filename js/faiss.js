@@ -19,7 +19,6 @@ const conversational_chain = async () =>{
   const model = new ChatGoogleGenerativeAI({apiKey: "AIzaSyA1KvMEhxY5fk0ObK9_OYNC0ZxgKfYLj5A",temperature: 0.3,modelName: "gemini-pro"})
   const prompt = new PromptTemplate({inputVariables:["context", "question"],template:prompt_template})
   const chain = loadQAStuffChain(llm=model,params=prompt)
-
   return chain
 }
 
