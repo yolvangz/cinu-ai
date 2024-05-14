@@ -1,0 +1,41 @@
+{
+  "name": "cinu-ai",
+  "version": "0.1.0",
+  "description": "Gemini AI-powered virtual assistend for CINU class in UNEFA with vector embeddings",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yolvangz/cinu-ai.git"
+  },
+  "keywords": [
+    "yolvangz",
+    "Luis-Marval",
+    "cinu",
+    "unefa",
+    "ai",
+    "ia",
+    "gemini",
+    "svelte",
+    "sveltekit",
+    "js",
+    "javascript",
+    "faiss-node"
+  ],
+  "author": "Yolvan G. Zambrano <yolvanzg@gmail.com> (https://github.com/yolvangz)",
+  "contributors": [
+    {
+      "name": "Luis Marval",
+      "email": "pokenithmer101@gmail.com",
+      "url": "https://github.com/Luis-Marval"
+    }
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/yolvangz/cinu-ai#readme",
+  "dependencies": {
+    "@google/generative-ai": "^0.11.1",
+    "pdf-parse": "^1.1.1"
+  }
+}
