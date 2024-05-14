@@ -1,9 +1,9 @@
 const fs = require("node:fs/promises");
 const pdf = require("pdf-parse");
 
-const databuffer = async () => {
+const databuffer = async (uri) => {
 	try {
-		const text = await fs.readFile("js/cinu.pdf");
+		const text = await fs.readFile(uri);
 		const buffer = Buffer.from(text);
 		return buffer;
 	} catch (err) {
@@ -15,21 +15,24 @@ const databuffer = async () => {
 		throw err;
 	}
 };
-const read = async () => {
-	const info = await databuffer();
+const read = async (uri) => {
+	// Check if URI is valid
+	if (typeof uri !== "string") throw new Error();
+
+	const info = await databuffer(uri);
 	const data = await pdf(info);
 	console.log(data.text);
 	return data.text;
 };
-const chunk = async () => {
-	const contenido = await read();
-	const tamano = 10000;
-	const desplazamiento = 9000;
+const chunk = async (textoCrudo) => {
+	const tamano = process.env.CHUNK_SIZE ?? 10000;
+	const desplazamiento = process.env.CHUNK_OVERLAP ?? 9000;
 	const chunks = [];
-	for (let i = 0; i < contenido.length; i += desplazamiento) {
-		let trozo = contenido.substring(i, i + tamano);
+	for (let i = 0; i < textoCrudo.length; i += desplazamiento) {
+		let trozo = textoCrudo.substring(i, i + tamano);
 		chunks.push(trozo);
 	}
 	console.log(chunks);
 };
 chunk();
+module.exports = { read, chunk };
