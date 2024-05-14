@@ -2,7 +2,7 @@ const { GoogleGenerativeAI }= require("@google/generative-ai");
 const os = require("node:os")
 const { GoogleGenerativeAIEmbeddings, ChatGoogleGenerativeAI } = require("@langchain/google-genai");
 const { PromptTemplate } = require("@langchain/core/prompts")
-const { loadQAChain } = require("langchain/chains")
+const { loadQAStuffChain } = require("langchain/chains")
 const { FaissStore } = require("@langchain/community/vectorstores/faiss")
 const { chunk } = require("./pdf-extrac")
 const { argv } = require("node:process")
@@ -26,23 +26,18 @@ const conversational_chain = async () =>{
   const model = new ChatGoogleGenerativeAI({apiKey: "AIzaSyA1KvMEhxY5fk0ObK9_OYNC0ZxgKfYLj5A",emperature: 0.3,modelName: "gemini-pro"})
   
   const prompt = new PromptTemplate({inputVariables:["context", "question"],template:prompt_template})
-  const chain = loadQAChain({llm:model,params:"stuff"})
+  const chain = loadQAStuffChain(llm=model,params=prompt)
 
   return chain
 }
 
 const user_input = async (user_question) =>{
-  embeddings = new GoogleGenerativeAIEmbeddings({apiKey: "AIzaSyA1KvMEhxY5fk0ObK9_OYNC0ZxgKfYLj5A",modelName: "embedding-001"})
+  const embeddings = new GoogleGenerativeAIEmbeddings({apiKey: "AIzaSyA1KvMEhxY5fk0ObK9_OYNC0ZxgKfYLj5A",modelName: "embedding-001"})
+  const new_db = await FaissStore.load("faiss_index", embeddings)
+  const docs = await new_db.similaritySearch(user_question)
+  const chain = await conversational_chain()
   
-  new_db = await FaissStore.load("faiss_index", embeddings)
-  docs = await new_db.similaritySearch(user_question)
-
-  chain = conversational_chain()
-  
-  response = chain(
-      {"input_documents":docs, "question": user_question}
-      , return_only_outputs=True)
-
+  const response = chain.prepOutputs({inputs:docs, outputs:user_question , returnOnlyOutputs:true})
   console.log(response)
   console.log("Reply: ", response["output_text"])
 }
