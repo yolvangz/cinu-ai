@@ -4,7 +4,7 @@
   "description": "Gemini AI-powered virtual assistend for CINU class in UNEFA with vector embeddings",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -36,6 +36,7 @@
   "homepage": "https://github.com/yolvangz/cinu-ai#readme",
   "dependencies": {
     "@google/generative-ai": "^0.11.1",
+    "dotenv": "^16.4.5",
     "pdf-parse": "^1.1.1"
   },
   "devDependencies": {

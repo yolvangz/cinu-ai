@@ -1,5 +1,11 @@
 const fs = require("node:fs/promises");
 const pdf = require("pdf-parse");
+const dotenv = require("dotenv");
+const path = require("path");
+dotenv.config();
+
+const PARENT_FOLDER = path.dirname(__dirname);
+const fileURI = path.resolve(PARENT_FOLDER, process.env.TEST_PDF_FILENAME);
 
 const databuffer = async (uri) => {
 	try {
@@ -20,9 +26,12 @@ const read = async (uri) => {
 	if (typeof uri !== "string") throw new Error();
 
 	const info = await databuffer(uri);
-	const data = await pdf(info);
-	console.log(data.text);
-	return data.text;
+	const rawData = await pdf(info);
+	const trimData = rawData.text.trim();
+	const lines = trimData.split("\n");
+	const trimmedLines = lines.map((line) => line.trim());
+	const data = trimmedLines.join("\n");
+	return data;
 };
 const chunk = async (textoCrudo) => {
 	const tamano = process.env.CHUNK_SIZE ?? 10000;
@@ -34,5 +43,6 @@ const chunk = async (textoCrudo) => {
 	}
 	console.log(chunks);
 };
-chunk();
+const text = read(fileURI);
+console.log(text);
 module.exports = { read, chunk };
