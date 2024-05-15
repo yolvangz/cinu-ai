@@ -1,7 +1,5 @@
 const fs = require("node:fs/promises");
 const pdf = require("pdf-parse");
-const dotenv = require("dotenv");
-dotenv.config();
 
 const databuffer = async (uri) => {
 	try {
@@ -29,15 +27,18 @@ const read = async (uri) => {
 	const data = trimmedLines.join("\n");
 	return data;
 };
-const chunk = async (textoCrudo) => {
-	const tamano = process.env.CHUNK_SIZE ?? 10000;
-	const desplazamiento = process.env.CHUNK_OVERLAP ?? 9000;
+const chunk = (textoCrudo, tamano = 1, desplazamiento = 0) => {
 	const chunks = [];
-	for (let i = 0; i < textoCrudo.length; i += desplazamiento) {
-		let trozo = textoCrudo.substring(i, i + tamano);
+	const step = tamano - desplazamiento;
+	const length = textoCrudo.length;
+	for (let i = 0, trozo = ""; i < length; i += step) {
+		trozo =
+			i + tamano < length
+				? textoCrudo.substr(i, tamano)
+				: textoCrudo.substring(length - tamano, length);
 		chunks.push(trozo);
 	}
-	console.log(chunks);
+	return chunks;
 };
 
 module.exports = { read, chunk };
