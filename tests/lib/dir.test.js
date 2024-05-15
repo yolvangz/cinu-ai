@@ -1,4 +1,4 @@
-const dir = require("../../js/dir.js");
+const dir = require("../../lib/dir.js");
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -20,7 +20,7 @@ test("Resolve temporal path: tests/js/test-document.pdf", () => {
 
 test("Resolve temporal path: tests/js/test-document.pdf from current folder", () => {
 	const directions = ["test-document.pdf"];
-	expect(dir.resolve(directions, __dirname)).toBe(
+	expect(dir.resolve(directions, "tests/js")).toBe(
 		"/home/yolvangz/projects/cinu-ai/tests/js/test-document.pdf"
 	);
 });

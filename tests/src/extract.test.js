@@ -1,12 +1,12 @@
 const fs = require("fs");
 const dotenv = require("dotenv");
-const dir = require("../../js/dir.js");
-const pdfParse = require(dir.resolve(["js", "pdf-extract.js"]));
+const dir = require("../../lib/dir.js");
+const pdfParse = require(dir.resolve(["src", "extract.js"]));
 dotenv.config();
 
-const inputFileURI = dir.resolve([process.env.TEST_PDF_FILENAME], __dirname);
-const expectedFileURI = dir.resolve([process.env.TEST_EXPECTED_FILENAME], __dirname);
-const resultFileURI = dir.resolve([process.env.TEST_OUTPUT_FILENAME], __dirname);
+const inputFileURI = dir.resolve(["extract", process.env.TEST_PDF_FILENAME], __dirname);
+const expectedFileURI = dir.resolve(["extract", process.env.TEST_EXPECTED_FILENAME], __dirname);
+const resultFileURI = dir.resolve(["extract", process.env.TEST_OUTPUT_FILENAME], __dirname);
 
 test("Extract test-document.pdf", async () => {
 	const expectedText = fs.readFileSync(expectedFileURI, "utf8").toString();
