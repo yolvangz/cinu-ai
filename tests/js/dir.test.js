@@ -24,7 +24,3 @@ test("Resolve temporal path: tests/js/test-document.pdf from current folder", ()
 		"/home/yolvangz/projects/cinu-ai/tests/js/test-document.pdf"
 	);
 });
-// test("Get inputFileURI", () => expect(inputFileURI).toBe("/home/yolvangz/projects/cinu-ai/tests/js/test-document.pdf"));
-// test("Get expectedFileURI", () =>
-// 	expect(expectedFileURI).toBe("/home/yolvangz/projects/cinu-ai/tests/js/expected.txt"));
-// test("Get resultFileURI", () => expect(resultFileURI).toBe("/home/yolvangz/projects/cinu-ai/tests/js/output.txt"));

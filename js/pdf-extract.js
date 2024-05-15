@@ -1,11 +1,7 @@
 const fs = require("node:fs/promises");
 const pdf = require("pdf-parse");
 const dotenv = require("dotenv");
-const path = require("path");
 dotenv.config();
-
-const PARENT_FOLDER = path.dirname(__dirname);
-const fileURI = path.resolve(PARENT_FOLDER, process.env.TEST_PDF_FILENAME);
 
 const databuffer = async (uri) => {
 	try {
@@ -43,6 +39,5 @@ const chunk = async (textoCrudo) => {
 	}
 	console.log(chunks);
 };
-const text = read(fileURI);
-console.log(text);
+
 module.exports = { read, chunk };
