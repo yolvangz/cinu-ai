@@ -1,8 +1,5 @@
-const env = require("dotenv");
-env.config();
-console.log();
-const { GoogleGenerativeAI } = require("@google/generative-ai");
 const os = require("node:os");
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 const {
 	GoogleGenerativeAIEmbeddings,
 	ChatGoogleGenerativeAI,
@@ -10,10 +7,12 @@ const {
 const { PromptTemplate } = require("@langchain/core/prompts");
 const { loadQAStuffChain } = require("langchain/chains");
 const { FaissStore } = require("@langchain/community/vectorstores/faiss");
-const { chunk } = require("./pdf-extrac");
+const pdf = require("extract.js");
+const dotenv = require("dotenv");
+dotenv.config();
 
 const get_vector_store = async () => {
-	let text = await chunk();
+	let text = await pdf.chunk();
 	let metadata = [{ name: "archivo" }];
 	let embedding = new GoogleGenerativeAIEmbeddings({
 		apiKey: process.env.API_KEY,
@@ -59,4 +58,5 @@ const main = () => {
 		user_input(user_question[2]);
 	}
 };
-main();
+
+module.exports = { get_vector_store, user_input };
