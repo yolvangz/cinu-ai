@@ -1,4 +1,10 @@
 class Embeddings {
+	/**
+	 * Constructor for the Embeddings entity.
+	 *
+	 * @param {type} vectorStoreAddress - Description of vectorStoreAddress parameter
+	 * @param {type} documentsAddress - Description of documentsAddress parameter
+	 */
 	constructor(vectorStoreAddress, documentsAddress) {
 		this.vectorAddress = vectorStoreAddress;
 		this.documents = [];

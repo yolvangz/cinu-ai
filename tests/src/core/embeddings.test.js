@@ -1,6 +1,6 @@
 const dotenv = require("dotenv");
 const fs = require("node:fs");
-const { resolve } = require("../../lib/dir.js");
+const { resolve } = require("../../../lib/dir.js");
 const { Embeddings } = require(resolve([
 	"src",
 	"core",
@@ -12,11 +12,13 @@ dotenv.config();
 describe("Embeddings", () => {
 	let embeddings;
 	let mockVectorAddress = resolve([process.env.VECTOR_STORE_ADDRESS]);
-	let backupMockVectorAddress = resolve([`.${process.env.VECTOR_STORE_ADDRESS}`]);
+	let backupMockVectorAddress = resolve([
+		`.${process.env.VECTOR_STORE_ADDRESS}`,
+	]);
 	embeddings = new Embeddings(mockVectorAddress, "documentsAddress");
 
 	test('createVectorStore should return an object with action "create"', () => {
-		if (fs.existsSync(mockVectorAddress)){
+		if (fs.existsSync(mockVectorAddress)) {
 			fs.renameSync(mockVectorAddress, backupMockVectorAddress);
 			embeddings = new Embeddings(mockVectorAddress, "documentsAddress");
 			fs.renameSync(backupMockVectorAddress, mockVectorAddress);
