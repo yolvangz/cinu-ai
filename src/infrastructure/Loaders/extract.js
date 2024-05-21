@@ -1,4 +1,5 @@
 const fs = require("node:fs/promises");
+const path = require("node:path");
 const pdf = require("pdf-parse");
 
 /**
@@ -11,7 +12,9 @@ const databuffer = async (uri) => {
 	try {
 		return await fs.readFile(uri, { encoding: null });
 	} catch (err) {
-		throw err.code === "ENOENT" ? new Error("Error: archivo no encontrado") : new Error(`Error al leer el archivo: ${err}`);
+		throw err.code === "ENOENT"
+			? new Error("Error: archivo no encontrado")
+			: new Error(`Error al leer el archivo: ${err}`);
 	}
 };
 /**
@@ -20,7 +23,7 @@ const databuffer = async (uri) => {
  * @param {string} uri - The URI to read (supports only PDF files)
  * @return {string} The processed and trimmed data
  */
-const read = async (uri) => {
+const readFile = async (uri) => {
 	if (typeof uri !== "string") throw new Error();
 
 	const info = await databuffer(uri);
@@ -30,15 +33,23 @@ const read = async (uri) => {
 	const trimmedLines = lines.map((line) => line.trim());
 	return trimmedLines.join("\n");
 };
+const readFolder = async (uri) => {
+	if (!(await fs.access(uri))) throw new Error("no existe el directorio");
+	const files = await fs.readdir(uri).map((fileName) => {
+		return path.join(uri, fileName);
+	});
+	return await files.map(async (file) => await readFile(file));
+};
 /**
  * Splits the input text into chunks of a specified size with an optional offset.
  *
- * @param {string} textoCrudo - The input text to be chunked.
+ * @param {string|Array<string>} input - The input text or array of input texts to be chunked.
  * @param {number} [tamano=1] - The size of each chunk (default is 1).
  * @param {number} [desplazamiento=0] - The offset for chunking (default is 0).
  * @return {Array<string>} An array of text chunks based on the specified size and offset.
  */
-const chunk = (textoCrudo, tamano = 1, desplazamiento = 0) => {
+const chunk = (input, tamano = 1, desplazamiento = 0) => {
+	const textoCrudo = Array.isArray(input) ? input.join("\n\n") : input;
 	const step = tamano - desplazamiento;
 	const chunks = [];
 	for (let i = 0; i < textoCrudo.length; i += step) {
@@ -49,4 +60,8 @@ const chunk = (textoCrudo, tamano = 1, desplazamiento = 0) => {
 	return chunks;
 };
 
-module.exports = { read, chunk };
+function newLoader () {
+	return { readFile, readFolder, chunk };
+};
+
+module.exports = newLoader;

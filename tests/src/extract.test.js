@@ -1,7 +1,17 @@
 const fs = require("fs");
 const dotenv = require("dotenv");
 const dir = require("../../lib/dir.js");
-const pdfParse = require(dir.resolve(["src", "extract.js"]));
+const { implementsInterface, Loader } = require(dir.resolve([
+	"src",
+	"infrastructure",
+	"interfaces.js",
+]));
+const extract = require(dir.resolve([
+	"src",
+	"infrastructure",
+	"Loaders",
+	"extract.js",
+]));
 dotenv.config();
 
 const inputFileURI = dir.resolve(
@@ -16,10 +26,14 @@ const resultFileURI = dir.resolve(
 	["extract", process.env.TEST_OUTPUT_FILENAME],
 	__dirname
 );
+const pdfParse = new extract();
+test("Check if interface is correctly implemented", () => {
+	expect(implementsInterface(pdfParse, Loader)).toBe(true);
+});
 
 test("Extract test-document.pdf", async () => {
 	const expectedText = fs.readFileSync(expectedFileURI, "utf8").toString();
-	const result = await pdfParse.read(inputFileURI);
+	const result = await pdfParse.readFile(inputFileURI);
 	fs.writeFileSync(resultFileURI, result);
 	await expect(result).toBe(expectedText);
 });

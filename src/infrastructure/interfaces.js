@@ -1,6 +1,3 @@
-const { getModelContextSize } = require("langchain/base_language");
-const { SearchApi } = require("langchain/tools");
-
 const Model = {
 	constructor: function (settings) {},
 	getTextModel: function () {},
@@ -11,7 +8,16 @@ const Model = {
 const Embedding = {
 	constructor: function (settings) {},
 	setup: function () {},
+	engine: {},
+	model: {},
+	splitter: {},
 	search: function (query) {},
+};
+
+const Loader = {
+	readFile: function (location) {},
+	readFolder: function (location) {},
+	chunk: function (input, size, overlap) {},
 };
 
 const Bot = {
@@ -62,4 +68,4 @@ function implementsInterface(obj, interfaceToCheck) {
 	return true;
 }
 
-module.exports = { implementsInterface, Model };
+module.exports = { implementsInterface, Model, Embedding, Loader, Bot, Chat, Message, Question, Answer };
