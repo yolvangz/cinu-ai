@@ -1,9 +1,8 @@
 const { resolve } = require("../../lib/dir.js");
-const InterfaceAIModel = require(resolve([
+const {implementsInterface, Model} = require(resolve([
 	"src",
 	"infrastructure",
-	"Models",
-	"interface.js",
+	"interfaces.js",
 ]));
 const {
 	ChatGoogleGenerativeAI,
@@ -18,44 +17,6 @@ const Gemini = require(resolve([
 const dotenv = require("dotenv");
 dotenv.config();
 
-describe("InterfaceAIModel", () => {
-	let model;
-
-	beforeEach(() => {
-		model = new InterfaceAIModel({
-			options: {
-				embedding: {
-					model: "embedding-001",
-				},
-				text: {
-					temperature: 1,
-					model: "text-001",
-				},
-				vision: {}
-			},
-		});
-	});
-
-	test("should have a constructor that sets settings and options", () => {
-		expect(model.settings).toBeDefined();
-		expect(model.options).toBeDefined();
-	});
-
-	test("should have a text property that returns an object", () => {
-		const result = model.text;
-		expect(result).toEqual({});
-	});
-
-	test("should have a embedding property that returns an object", () => {
-		const result = model.embedding;
-		expect(result).toEqual({});
-	});
-
-	test("should have a vision property that returns an object", () => {
-		const result = model.vision;
-		expect(result).toEqual({});
-	});
-});
 
 describe("Gemini", () => {
 	const gemini = new Gemini({
@@ -73,25 +34,26 @@ describe("Gemini", () => {
 			},
 		},
 	});
-
+	test("Class should have implemented interface correctly", () => {
+		expect(implementsInterface(gemini, Model)).toBe(true);
+	});
 	test("should have a constructor that sets settings and options", () => {
 		expect(gemini.settings).toBeDefined();
 		expect(gemini.options).toBeDefined();
 	});
 
 	test("should have a text property that returns an object", () => {
-		const result = gemini.text;
+		const result = gemini.getTextModel();
 		expect(result).toBeInstanceOf(ChatGoogleGenerativeAI);
 	});
 
 	test("should have a embedding property that returns an object", () => {
-		const result = gemini.embedding;
+		const result = gemini.getEmbeddingModel();
 		expect(result).toBeInstanceOf(GoogleGenerativeAIEmbeddings);
 	});
 
 	test("should have a vision property that returns an object", () => {
-		const result = gemini.vision;
-		console.log(gemini.vision);
+		const result = gemini.getVisionModel();
 		expect(result).toBeInstanceOf(ChatGoogleGenerativeAI);
 	});
 });
