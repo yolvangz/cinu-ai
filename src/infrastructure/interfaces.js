@@ -22,12 +22,7 @@ const Embedding = {
 
 const Bot = {
 	constructor: function (settings) {},
-	persona: "",
-	instructions: "",
-	examples: [""],
-	template: "",
-	model: {},
-	getInstructions: function () {},
+	setup: async function () {},
 	answer: function (question) {},
 };
 
@@ -43,13 +38,13 @@ const Message = {
 	chatID: "",
 	order: 0,
 	from: "",
-	getContent: function () {},
+	content: "",
 };
 
 const Question = {
 	...Message,
-	getContext: function () {},
-	getFullContent: function () {},
+	context: {},
+	fullContent: "",
 };
 
 const Answer = {
@@ -62,8 +57,12 @@ function implementsInterface(obj, interfaceToCheck) {
 		if (
 			!(methodOrProperty in obj) ||
 			typeof obj[methodOrProperty] !== typeof interfaceToCheck[methodOrProperty]
-		){
-			console.log(`${typeof obj[methodOrProperty]} !== ${typeof interfaceToCheck[methodOrProperty]}`);
+		) {
+			console.log(
+				`${typeof obj[methodOrProperty]} !== ${typeof interfaceToCheck[
+					methodOrProperty
+				]}`
+			);
 			return false;
 		}
 		if (Object.keys(interfaceToCheck[methodOrProperty]).length > 0) {
