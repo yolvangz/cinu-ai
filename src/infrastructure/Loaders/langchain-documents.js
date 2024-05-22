@@ -1,4 +1,4 @@
-const fs = require("node:fs/promises");
+const fs = require("node:fs");
 const path = require("node:path");
 const { Document } = require("langchain/document");
 const { DirectoryLoader } = require("langchain/document_loaders/fs/directory");
@@ -14,13 +14,12 @@ class DocumentsLoader {
 		this.#setup();
 	}
 	#setup() {
-		this.fileSystem = fs;
 		this.#chunkSize = this.settings.chunkSize;
 		this.#chunkOverlap = this.settings.chunkOverlap;
 	}
-	async #accessFolder(uri) {
+	#accessFolder(uri) {
 		try {
-			this.fileSystem.access(uri);
+			fs.accessSync(uri);
 			return true;
 		} catch (err) {
 			return false;
@@ -56,16 +55,25 @@ class DocumentsLoader {
 		return docObject ? doc : doc.pageContent;
 	}
 	async readFolder(documentsFolder, docObject = false) {
-		if (!(await this.#accessFolder(documentFolder)))
-			throw new Error(`No existe el directorio ${this.documentFolder}`);
-		const directoryLoader = new DirectoryLoader(documentFolder, {
-			".pdf": this.#pdf,
-			".docx": this.#docx,
+		let documentsObjects;
+		const checkFolder = await this.#accessFolder(documentsFolder);
+		if (!checkFolder)
+			throw new Error(`No existe el directorio ${documentFolder}`);
+		const directory = new DirectoryLoader(documentsFolder, {
+			".pdf": (path) => new PDFLoader(path, { splitPages: false }),
 		});
-		documentsObjects = await this.directoryLoader.load();
+		try {
+			documentsObjects = await directory.load();
+		} catch (err) {
+			console.error(err);
+		}
+		const trimmedDocumentsObjects = documentsObjects.map((doc) => {
+			doc.pageContent = this.#trim(doc.pageContent);
+			return doc;
+		});
 		return docObject
-			? documentsObjects
-			: documentsObjects.map((doc) => doc.pageContent);
+			? trimmedDocumentsObjects
+			: trimmedDocumentsObjects.map((doc) => doc.pageContent);
 	}
 	async chunk(input, docObject = false) {
 		let documents;
@@ -92,7 +100,7 @@ class DocumentsLoader {
 		return result.map((doc) => doc.pageContent);
 	}
 	async checkLocation(location) {
-		return await this.#accessFolder(location);
+		return this.#accessFolder(location);
 	}
 }
 

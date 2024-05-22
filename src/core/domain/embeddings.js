@@ -2,8 +2,8 @@ class Embeddings {
 	/**
 	 * Constructor for the Embeddings entity.
 	 *
-	 * @param {type} vectorStoreAddress - Description of vectorStoreAddress parameter
-	 * @param {type} documentsAddress - Description of documentsAddress parameter
+	 * @param {string} vectorStoreAddress - Description of vectorStoreAddress parameter
+	 * @param {string} documentsAddress - Description of documentsAddress parameter
 	 */
 	constructor(vectorStoreAddress, documentsAddress) {
 		this.vectorAddress = vectorStoreAddress;
@@ -12,19 +12,6 @@ class Embeddings {
 		this.vectorStore = this.constructor.vectorStoreExists()
 			? this.loadVectorStore()
 			: this.createVectorStore();
-	}
-	static vectorStoreExists() {
-		console.log("Checking if vector store exists from domain");
-		return true;
-	}
-	createVectorStore() {
-		return { action: "create" };
-	}
-	loadVectorStore() {
-		return { action: "load" };
-	}
-	search(query) {
-		console.log(`Make a search about: ${query}`);
 	}
 }
 module.exports = Embeddings;

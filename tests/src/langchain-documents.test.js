@@ -82,3 +82,13 @@ test("Check some location", async () => {
 	const result = await langchainLoader.checkLocation(__dirname);
 	expect(result).toBe(true);
 });
+
+const inputFolderURI = dir.resolve(["tests", "src", "faiss", "documents"]);
+test("Extract test-document.pdf from folder to Document object", async () => {
+	const expectedText = fs.readFileSync(expectedFileURI, "utf8").toString();
+	const docs = await langchainLoader.readFolder(inputFolderURI, true);
+	console.log(docs);
+	for (const doc of docs) {
+		expect(doc.pageContent).toBe(expectedText);
+	}
+});

@@ -1,22 +1,27 @@
 const dotenv = require("dotenv");
-const fs = require("node:fs");
 const { resolve } = require("../../../lib/dir.js");
+const Model = require("../../infrastructure/Models/gemini.js");
+const Embedding = require("../../infrastructure/Embeddings/faiss.js");
 const Entity = require("../domain/embeddings");
 dotenv.config();
 
-class Embeddings extends Entity {
+class Embeddings {
 	constructor() {
-		const vectorAddress = resolve([process.env.VECTOR_STORE_ADDRESS]);
-		const documentsAddress = resolve([process.env.EMBEDDINGS_INPUT_ADDRESS]);
-		super(vectorAddress, documentsAddress);
+		const embeddingModel = new Model({
+			credentials: process.env.GEMINI_API_KEY,
+			options: {
+				embedding: {
+					model: "embedding-001",
+				},
+			},
+		});
+		this.embedding = new Embedding({
+			vectorAddress: resolve([process.env.VECTOR_STORE_ADDRESS]),
+			model: embeddingModel,
+		});
 	}
-	/**
-	 * Checks if the vector store exists from the application.
-	 *
-	 * @return {boolean} Indicates whether the vector store exists.
-	 */
-	static vectorStoreExists() {
-		return fs.existsSync(this.vectorAddress);
+	async search(query) {
+		return await(this.embedding.search(query));
 	}
 }
 

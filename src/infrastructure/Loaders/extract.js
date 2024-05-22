@@ -1,6 +1,6 @@
 const fs = require("node:fs/promises");
 const path = require("node:path");
-const pdf = require("pdf-parse");
+const PDF = require("pdf-parse");
 
 /**
  * Asynchronously reads the content of a file at the specified URI and converts it into a Buffer.
@@ -12,9 +12,11 @@ const databuffer = async (uri) => {
 	try {
 		return await fs.readFile(uri, { encoding: null });
 	} catch (err) {
-		throw err.code === "ENOENT"
-			? new Error("Error: archivo no encontrado")
-			: new Error(`Error al leer el archivo: ${err}`);
+		console.error(
+			err.code === "ENOENT"
+				? new Error(`Error: archivo ${uri} no encontrado`)
+				: new Error(`Error al leer el archivo: ${err}`)
+		);
 	}
 };
 /**
@@ -24,21 +26,26 @@ const databuffer = async (uri) => {
  * @return {string} The processed and trimmed data
  */
 const readFile = async (uri) => {
-	if (typeof uri !== "string") throw new Error();
-
 	const info = await databuffer(uri);
-	const rawData = await pdf(info);
+	const rawData = await PDF(info);
 	const trimData = rawData.text.trim();
 	const lines = trimData.split(/\s*\n\s*/);
 	const trimmedLines = lines.map((line) => line.trim());
 	return trimmedLines.join("\n");
 };
 const readFolder = async (uri) => {
-	if (!(await fs.access(uri))) throw new Error("no existe el directorio");
-	const files = await fs.readdir(uri).map((fileName) => {
-		return path.join(uri, fileName);
-	});
-	return await files.map(async (file) => await readFile(file));
+	try {
+		const exists = await checkLocation(uri);
+		if (!exists) throw new Error(`no existe el directorio ${uri}`);
+		const files = await fs.readdir(uri);
+		const readFiles = files.map((fileName) => {
+			return path.join(uri, fileName);
+		});
+		return await readFiles.map(async (file) => await readFile(file));
+	} catch (err) {
+		console.error(err);
+		throw err;
+	}
 };
 /**
  * Splits the input text into chunks of a specified size with an optional offset.
