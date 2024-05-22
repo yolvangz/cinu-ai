@@ -1,17 +1,9 @@
-class Embeddings {
-	/**
-	 * Constructor for the Embeddings entity.
-	 *
-	 * @param {string} vectorStoreAddress - Description of vectorStoreAddress parameter
-	 * @param {string} documentsAddress - Description of documentsAddress parameter
-	 */
-	constructor(vectorStoreAddress, documentsAddress) {
-		this.vectorAddress = vectorStoreAddress;
-		this.documents = [];
-		this.documentsAddress = documentsAddress;
-		this.vectorStore = this.constructor.vectorStoreExists()
-			? this.loadVectorStore()
-			: this.createVectorStore();
-	}
-}
-module.exports = Embeddings;
+const embedding = require("../application/embeddings.js");
+
+const question = "Qué es el álgebra?";
+
+(async () => {
+	await embedding.setup();
+	const response = await embedding.search(question);
+	console.log(response);
+})();

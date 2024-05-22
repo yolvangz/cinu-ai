@@ -15,9 +15,9 @@ const Loader = {
 
 const Embedding = {
 	constructor: function (settings) {},
-	setup: function () {},
+	setup: async function () {},
 	settings: {},
-	search: function (query) {},
+	search: async function (query) {},
 };
 
 const Bot = {

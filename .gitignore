@@ -131,3 +131,4 @@ dist
 .vscode
 output.txt
 faiss_index
+documents/

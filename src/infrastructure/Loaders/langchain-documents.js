@@ -60,7 +60,8 @@ class DocumentsLoader {
 		if (!checkFolder)
 			throw new Error(`No existe el directorio ${documentFolder}`);
 		const directory = new DirectoryLoader(documentsFolder, {
-			".pdf": (path) => new PDFLoader(path, { splitPages: false }),
+			".pdf": (path) => this.#pdf(path),
+			".docx": (path) => this.#docx(path),
 		});
 		try {
 			documentsObjects = await directory.load();

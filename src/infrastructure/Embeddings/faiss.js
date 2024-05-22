@@ -42,6 +42,7 @@ class Faiss {
 	}
 	async #createStorage() {
 		const embeddings = await this.#generateEmbeddings();
+		console.log("Saving storage at: ", this.#vectorStoreAddress);
 		await embeddings.save(this.#vectorStoreAddress);
 	}
 	async #loadStorage() {
