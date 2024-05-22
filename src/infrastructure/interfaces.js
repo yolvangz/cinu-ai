@@ -5,19 +5,19 @@ const Model = {
 	getVisionModel: function () {},
 };
 
+const Loader = {
+	constructor(settings) {},
+	readFile: async function (location) {},
+	readFolder: async function (location) {},
+	chunk: async function (input, docObject = false) {},
+	checkLocation: async function (location) {},
+};
+
 const Embedding = {
 	constructor: function (settings) {},
 	setup: function () {},
-	engine: {},
-	model: {},
-	splitter: {},
+	settings: {},
 	search: function (query) {},
-};
-
-const Loader = {
-	readFile: function (location) {},
-	readFolder: function (location) {},
-	chunk: function (input, size, overlap) {},
 };
 
 const Bot = {
@@ -62,10 +62,32 @@ function implementsInterface(obj, interfaceToCheck) {
 		if (
 			!(methodOrProperty in obj) ||
 			typeof obj[methodOrProperty] !== typeof interfaceToCheck[methodOrProperty]
-		)
+		){
+			console.log(`${typeof obj[methodOrProperty]} !== ${typeof interfaceToCheck[methodOrProperty]}`);
 			return false;
+		}
+		if (Object.keys(interfaceToCheck[methodOrProperty]).length > 0) {
+			if (Array.isArray(interfaceToCheck[methodOrProperty])) continue;
+			if (
+				!implementsInterface(
+					obj[methodOrProperty],
+					interfaceToCheck[methodOrProperty]
+				)
+			)
+				return false;
+		}
 	}
 	return true;
 }
 
-module.exports = { implementsInterface, Model, Embedding, Loader, Bot, Chat, Message, Question, Answer };
+module.exports = {
+	implementsInterface,
+	Model,
+	Embedding,
+	Loader,
+	Bot,
+	Chat,
+	Message,
+	Question,
+	Answer,
+};

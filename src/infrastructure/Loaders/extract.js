@@ -48,7 +48,9 @@ const readFolder = async (uri) => {
  * @param {number} [desplazamiento=0] - The offset for chunking (default is 0).
  * @return {Array<string>} An array of text chunks based on the specified size and offset.
  */
-const chunk = (input, tamano = 1, desplazamiento = 0) => {
+async function chunk(input, docObject = false) {
+	const tamano = this.chunkSize;
+	const desplazamiento = this.chunkOverlap;
 	const textoCrudo = Array.isArray(input) ? input.join("\n\n") : input;
 	const step = tamano - desplazamiento;
 	const chunks = [];
@@ -58,10 +60,25 @@ const chunk = (input, tamano = 1, desplazamiento = 0) => {
 		chunks.push(textoCrudo.slice(start, end));
 	}
 	return chunks;
+}
+const checkLocation = async (location) => {
+	try {
+		await fs.access(location);
+		return true;
+	} catch (err) {
+		return false;
+	}
 };
 
-function newLoader () {
-	return { readFile, readFolder, chunk };
-};
+function newLoader(settings) {
+	this.settings = settings;
+	this.chunkSize = settings.chunkSize;
+	this.chunkOverlap = settings.chunkOverlap;
+	this.readFile = readFile;
+	this.readFolder = readFolder;
+	this.chunk = chunk.bind(this);
+	this.checkLocation = checkLocation;
+	return this;
+}
 
 module.exports = newLoader;

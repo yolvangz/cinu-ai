@@ -1,4 +1,4 @@
-const fs = require("node:fs");
+const fs = require("node:fs/promises");
 const path = require("node:path");
 const { Document } = require("langchain/document");
 const { DirectoryLoader } = require("langchain/document_loaders/fs/directory");
@@ -7,11 +7,24 @@ const { DocxLoader } = require("langchain/document_loaders/fs/docx");
 const { RecursiveCharacterTextSplitter } = require("langchain/text_splitter");
 
 class DocumentsLoader {
-	constructor() {
-		this.fileSystem = fs;
+	#chunkSize;
+	#chunkOverlap;
+	constructor(settings) {
+		this.settings = settings;
+		this.#setup();
 	}
-	#accessFolder(uri) {
-		return this.fileSystem.access(uri);
+	#setup() {
+		this.fileSystem = fs;
+		this.#chunkSize = this.settings.chunkSize;
+		this.#chunkOverlap = this.settings.chunkOverlap;
+	}
+	async #accessFolder(uri) {
+		try {
+			this.fileSystem.access(uri);
+			return true;
+		} catch (err) {
+			return false;
+		}
 	}
 	#pdf(path) {
 		return new PDFLoader(path, { splitPages: false });
@@ -43,7 +56,7 @@ class DocumentsLoader {
 		return docObject ? doc : doc.pageContent;
 	}
 	async readFolder(documentsFolder, docObject = false) {
-		if (!this.#accessFolder(documentFolder))
+		if (!(await this.#accessFolder(documentFolder)))
 			throw new Error(`No existe el directorio ${this.documentFolder}`);
 		const directoryLoader = new DirectoryLoader(documentFolder, {
 			".pdf": this.#pdf,
@@ -54,11 +67,11 @@ class DocumentsLoader {
 			? documentsObjects
 			: documentsObjects.map((doc) => doc.pageContent);
 	}
-	async chunk(input, chunkSize, chunkOverlap, docObject = false) {
+	async chunk(input, docObject = false) {
 		let documents;
 		const textSplitter = new RecursiveCharacterTextSplitter({
-			chunkSize: chunkSize,
-			chunkOverlap: chunkOverlap,
+			chunkSize: this.#chunkSize,
+			chunkOverlap: this.#chunkOverlap,
 		});
 		if (Array.isArray(input)) {
 			if (input.every((doc) => doc instanceof Document)) {
@@ -77,6 +90,9 @@ class DocumentsLoader {
 		const result = await textSplitter.splitDocuments(documents);
 		if (docObject) return result;
 		return result.map((doc) => doc.pageContent);
+	}
+	async checkLocation(location) {
+		return await this.#accessFolder(location);
 	}
 }
 

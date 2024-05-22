@@ -26,7 +26,10 @@ const resultFileURI = dir.resolve(
 	["extract", process.env.TEST_OUTPUT_FILENAME],
 	__dirname
 );
-const pdfParse = new extract();
+const pdfParse = new extract({
+	chunkSize: 15,
+	chunkOverlap: 5,
+});
 test("Check if interface is correctly implemented", () => {
 	expect(implementsInterface(pdfParse, Loader)).toBe(true);
 });
@@ -38,8 +41,14 @@ test("Extract test-document.pdf", async () => {
 	await expect(result).toBe(expectedText);
 });
 
-test("Chunking text file", () => {
+test("Chunking text file", async () => {
 	const text = "Lorem ipsum dolor sit amet.";
 	const expected = ["Lorem ipsum dol", "m dolor sit ame", "dolor sit amet."];
-	expect(pdfParse.chunk(text, 15, 5)).toStrictEqual(expected);
+	const result = await pdfParse.chunk(text);
+	expect(result).toStrictEqual(expected);
+});
+
+test("Check some location", async () => {
+	const result = await pdfParse.checkLocation(__dirname);
+	expect(result).toBe(true);
 });
