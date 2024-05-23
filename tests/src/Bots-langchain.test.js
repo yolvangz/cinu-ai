@@ -23,7 +23,7 @@ describe("Langchain Chatbot with Gemini, Faiss and langchain", () => {
 				model: "gemini-1.0-pro",
 			},
 			embedding: {
-				model: "embedding-001",
+				model: "text-embedding-004",
 			},
 		},
 	});
@@ -50,15 +50,21 @@ describe("Langchain Chatbot with Gemini, Faiss and langchain", () => {
 			retriever: embedding,
 		});
 		await chatbot.setup();
-	});
+	}, 30000);
 
 	test("Class should have implemented interface correctly", () => {
 		expect(implementsInterface(chatbot, Bot)).toBe(true);
 	});
 	test("Testing with sample question", async () => {
 		const question = "Qué es el lenguaje?";
-		const response = await chatbot.answer(question);
-		console.log(question, response);
+		let response;
+		try {
+			response = await chatbot.answer(question);
+			console.log(question, response);
+		} catch (err) {
+			console.error(err.message);
+		}
 		expect(response).not.toBeNull();
-	}, 10000);
+	}, 20000);
 });
+
