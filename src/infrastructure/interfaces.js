@@ -17,6 +17,7 @@ const Embedding = {
 	constructor: function (settings) {},
 	setup: async function () {},
 	settings: {},
+	storage: {},
 	search: async function (query) {},
 };
 

@@ -4,7 +4,8 @@ const {
 } = require("langchain/chains/combine_documents");
 const { StringOutputParser } = require("@langchain/core/output_parsers");
 const { HumanMessage, AIMessage } = require("@langchain/core/messages");
-// const { createRetrievalChain } = require("langchain/chains/retrieval");
+const { createRetrievalChain } = require("langchain/chains/retrieval");
+const { CombinedMemory } = require("langchain/memory");
 
 class Bot {
 	#persona;
@@ -39,15 +40,18 @@ Question: {input}`);
 	}
 	async answer(question) {
 		// const langchainQuestion = question.constructor.convert(question, HumanMessage);
-		// const fullQuestion = Object.create(question);
-		// fullQuestion.context = await this.#getContextAbout(question.content);
-		const context = await this.#getContextAbout(question.content);
+		// const context = await this.#getContextAbout(question.content);
 		const prompt = this.#getInstructions();
 		const documentChain = await createStuffDocumentsChain({
 			llm: this.#chatModel,
 			prompt,
 		});
-		return await documentChain.invoke({ input: question.content, context });
+		const retriever = this.#retriever.storage.asRetriever();
+		const retrievalChain = await createRetrievalChain({
+			combineDocsChain: documentChain,
+			retriever,
+		});
+		return (await retrievalChain.invoke({ input: question.content })).answer;
 	}
 }
 module.exports = Bot;

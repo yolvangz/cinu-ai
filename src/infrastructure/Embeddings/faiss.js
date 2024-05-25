@@ -27,8 +27,12 @@ class Faiss {
 	async checkStorage() {
 		const results = [
 			await this.#loader.checkLocation(this.#vectorStoreAddress),
-			await this.#loader.checkLocation(`${this.#vectorStoreAddress}/faiss.index`),
-			await this.#loader.checkLocation(`${this.#vectorStoreAddress}/docstore.json`),
+			await this.#loader.checkLocation(
+				`${this.#vectorStoreAddress}/faiss.index`
+			),
+			await this.#loader.checkLocation(
+				`${this.#vectorStoreAddress}/docstore.json`
+			),
 		];
 		return results.every((res) => res);
 	}
@@ -60,6 +64,9 @@ class Faiss {
 	async search(query) {
 		if (!this.#validateQuery(query)) return null;
 		return await this.#storage.similaritySearch(query);
+	}
+	get storage() {
+		return this.#storage;
 	}
 }
 

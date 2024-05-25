@@ -7,7 +7,7 @@ class Message {
 	}
 	static convert(source, destinationConstructor = null) {
 		if (source instanceof this) {
-			const result = new destinationConstructor(source.content);
+			return new destinationConstructor(source.content);
 			// if wants to convert from abstract class to specific class
 		} else {
 			// else, wants to convert from specific class to abstract class
