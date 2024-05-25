@@ -6,6 +6,7 @@ const Loader = require(resolve(
 	["Loaders/langchain-documents.js"],
 	infrastructurePath
 ));
+const { Message } = require(resolve(["Messages.js"], infrastructurePath));
 const AIBot = require(resolve(["Bots/langchain.js"], infrastructurePath));
 const { implementsInterface, Bot } = require(resolve(
 	["interfaces.js"],
@@ -42,9 +43,9 @@ describe("Langchain Chatbot with Gemini, Faiss and langchain", () => {
 	beforeEach(async () => {
 		await embedding.setup();
 		chatbot = new AIBot({
-			persona: "You are a helpful assistant ",
+			persona: "Eres un asistente útil ",
 			instructions:
-				"You must answer the questions received only based on the context given. If you don't have context then must say that you can't answer the question.",
+				"Debes contestar las preguntas recibidas sólo basado en el contenido dado. Si no tienes contexto, entonces tienes que responder que no se puede contestar la pregunta.",
 			chatModel: model.getTextModel(),
 			visionModel: model.getVisionModel(),
 			retriever: embedding,
@@ -56,15 +57,17 @@ describe("Langchain Chatbot with Gemini, Faiss and langchain", () => {
 		expect(implementsInterface(chatbot, Bot)).toBe(true);
 	});
 	test("Testing with sample question", async () => {
-		const question = "Qué es el lenguaje?";
+		let ok = true;
+		const question = new Message("user","Qué es el lenguaje?");
 		let response;
 		try {
 			response = await chatbot.answer(question);
-			console.log(question, response);
+			console.log(question.content, response);
 		} catch (err) {
+			ok = false;
 			console.error(err.message);
 		}
+		expect(ok).toBeTruthy();
 		expect(response).not.toBeNull();
 	}, 20000);
 });
-

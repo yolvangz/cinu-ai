@@ -28,6 +28,7 @@ const Bot = {
 
 const Chat = {
 	constructor: function (settings) {},
+	setup: async function () {},
 	ID: "",
 	title: "",
 	addMessage: function () {},
@@ -35,21 +36,8 @@ const Chat = {
 
 const Message = {
 	constructor: function () {},
-	chatID: "",
-	order: 0,
 	from: "",
 	content: "",
-};
-
-const Question = {
-	...Message,
-	context: {},
-	fullContent: "",
-};
-
-const Answer = {
-	...Message,
-	to: "",
 };
 
 function implementsInterface(obj, interfaceToCheck) {
@@ -87,6 +75,4 @@ module.exports = {
 	Bot,
 	Chat,
 	Message,
-	Question,
-	Answer,
 };

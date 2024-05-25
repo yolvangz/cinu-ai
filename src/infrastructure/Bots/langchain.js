@@ -3,6 +3,8 @@ const {
 	createStuffDocumentsChain,
 } = require("langchain/chains/combine_documents");
 const { StringOutputParser } = require("@langchain/core/output_parsers");
+const { HumanMessage, AIMessage } = require("@langchain/core/messages");
+// const { createRetrievalChain } = require("langchain/chains/retrieval");
 
 class Bot {
 	#persona;
@@ -24,6 +26,7 @@ class Bot {
 	}
 	#getInstructions() {
 		return ChatPromptTemplate.fromTemplate(`
+${this.#persona}
 ${this.#instructions}
 <context>
 {context}
@@ -35,15 +38,16 @@ Question: {input}`);
 		return await this.#retriever.search(query);
 	}
 	async answer(question) {
-		const context = await this.#getContextAbout(question);
+		// const langchainQuestion = question.constructor.convert(question, HumanMessage);
 		// const fullQuestion = Object.create(question);
 		// fullQuestion.context = await this.#getContextAbout(question.content);
+		const context = await this.#getContextAbout(question.content);
 		const prompt = this.#getInstructions();
 		const documentChain = await createStuffDocumentsChain({
 			llm: this.#chatModel,
 			prompt,
 		});
-		return await documentChain.invoke({ input: question, context });
+		return await documentChain.invoke({ input: question.content, context });
 	}
 }
 module.exports = Bot;
