@@ -24,6 +24,7 @@ const Embedding = {
 const Bot = {
 	constructor: function (settings) {},
 	setup: async function () {},
+	history: [],
 	answer: function (question) {},
 };
 

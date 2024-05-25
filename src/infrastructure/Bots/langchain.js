@@ -12,6 +12,7 @@ const {
 	createHistoryAwareRetriever,
 } = require("langchain/chains/history_aware_retriever");
 const { CombinedMemory } = require("langchain/memory");
+const { Message } = require("../interfaces");
 
 class Bot {
 	#persona;
@@ -21,6 +22,8 @@ class Bot {
 	#visionModel;
 	#retriever;
 	#history;
+	#messageInterface;
+	#roles;
 	constructor(settings) {
 		this.settings = settings;
 	}
@@ -34,20 +37,31 @@ class Bot {
 		this.#history = this.settings.history
 			? this.settings.history.map(this.#translateMessageToNative)
 			: [];
+		this.#roles = this.settings.roles ?? [
+			{ native: AIMessage, role: "bot" },
+			{ native: HumanMessage, role: "user" },
+		];
+		this.#messageInterface = this.settings.messageInterface;
+	}
+	get history() {
+		return this.#history.map(this.#translateNativeToMessage.bind(this));
+	}
+	set history(messagesList) {
+		this.#history = messagesList.map(this.#translateMessageToNative.bind(this));
 	}
 	#translateMessageToNative(message) {
-		let nativeMessage;
-		switch (message.from) {
-			case "user":
-				nativeMessage = HumanMessage;
-				break;
-			case "bot":
-				nativeMessage = AIMessage;
-				break;
-			default:
-				throw new Error(`Unsupported message type: ${message.from}`);
-		}
-		return message.constructor.convert(message, nativeMessage);
+		let nativeMessage = this.#roles.find((role) => message.from === role.role);
+		if (nativeMessage === undefined)
+			throw new Error(`Unsupported abstract message type: ${message.from}`);
+		return this.#messageInterface.convert(message, nativeMessage.native);
+	}
+	#translateNativeToMessage(nativeMessage) {
+		let messageFormat = this.#roles.find(
+			(role) => nativeMessage instanceof role.native
+		);
+		if (messageFormat === undefined)
+			throw new Error("Unsupported native message type");
+		return this.#messageInterface.convert(nativeMessage, null, messageFormat.role);
 	}
 	#getInstructions() {
 		return ChatPromptTemplate.fromMessages([

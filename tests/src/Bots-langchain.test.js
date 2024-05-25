@@ -49,10 +49,7 @@ describe("Langchain Chatbot with Gemini, Faiss and langchain", () => {
 			chatModel: model.getTextModel(),
 			visionModel: model.getVisionModel(),
 			retriever: embedding,
-			history: [
-				new Message("user", "¿Qué es el lenguaje?"),
-				new Message("bot", "El lenguaje es el conjunto de sonidos articulados con que el hombre manifiesta lo que piensa o siente"),
-			],
+			messageInterface: Message
 		});
 		await chatbot.setup();
 	}, 30000);
@@ -61,7 +58,20 @@ describe("Langchain Chatbot with Gemini, Faiss and langchain", () => {
 		expect(implementsInterface(chatbot, Bot)).toBe(true);
 	});
 	test("Testing with sample question", async () => {
-		let ok = true;
+		const question = new Message("user", "Qué es el lenguaje?");
+		let response;
+		response = await chatbot.answer(question);
+		console.log(question.content, response);
+		expect(response).not.toBeNull();
+	}, 20000);
+	test("Testing with follow-up question", async () => {
+		chatbot.history = [
+			new Message("user", "¿Qué es el lenguaje?"),
+			new Message(
+				"bot",
+				"El lenguaje es el conjunto de sonidos articulados con que el hombre manifiesta lo que piensa o siente"
+			),
+		];
 		const question = new Message("user", "Qué lo caracteriza?");
 		let response;
 		response = await chatbot.answer(question);
