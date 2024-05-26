@@ -10,21 +10,18 @@ const { implementsInterface, Embedding } = require(resolve([
 const FaissEmbedding = require(resolve([
 	"src",
 	"infrastructure",
-	"Embeddings",
-	"faiss.js",
-]));
+	"embeddings.js",
+])).Faiss;
 const Loader = require(resolve([
 	"src",
 	"infrastructure",
-	"Loaders",
-	"langchain-documents.js",
-]));
+	"loaders.js",
+])).DocumentsLoader;
 const AIModel = require(resolve([
 	"src",
 	"infrastructure",
-	"Models",
-	"gemini.js",
-]));
+	"models.js",
+])).Gemini;
 const dotenv = require("dotenv");
 dotenv.config();
 

@@ -34,4 +34,4 @@ class Gemini {
 	}
 }
 
-module.exports = Gemini;
+module.exports = { Gemini };

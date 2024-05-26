@@ -17,44 +17,33 @@ const Embedding = {
 	constructor: function (settings) {},
 	setup: async function () {},
 	settings: {},
+	storage: {},
 	search: async function (query) {},
 };
 
 const Bot = {
 	constructor: function (settings) {},
-	persona: "",
-	instructions: "",
-	examples: [""],
-	template: "",
-	model: {},
-	getInstructions: function () {},
+	setup: async function () {},
+	history: [],
 	answer: function (question) {},
 };
 
 const Chat = {
-	constructor: function (settings) {},
+	_constructor: function (settings) {},
+	create: async function (dataAccess, Message, history) {},
+	load: async function (dataAccess, Message, id) {},
+	save: async function (dataAccess, chat) {},
+	addMessages: function (...messages) {},
+	translator: {},
 	ID: "",
 	title: "",
-	addMessage: function () {},
+	history: [],
 };
 
 const Message = {
 	constructor: function () {},
-	chatID: "",
-	order: 0,
 	from: "",
-	getContent: function () {},
-};
-
-const Question = {
-	...Message,
-	getContext: function () {},
-	getFullContent: function () {},
-};
-
-const Answer = {
-	...Message,
-	to: "",
+	content: "",
 };
 
 function implementsInterface(obj, interfaceToCheck) {
@@ -62,8 +51,12 @@ function implementsInterface(obj, interfaceToCheck) {
 		if (
 			!(methodOrProperty in obj) ||
 			typeof obj[methodOrProperty] !== typeof interfaceToCheck[methodOrProperty]
-		){
-			console.log(`${typeof obj[methodOrProperty]} !== ${typeof interfaceToCheck[methodOrProperty]}`);
+		) {
+			console.log(
+				`${typeof obj[methodOrProperty]} !== ${typeof interfaceToCheck[
+					methodOrProperty
+				]}`
+			);
 			return false;
 		}
 		if (Object.keys(interfaceToCheck[methodOrProperty]).length > 0) {
@@ -88,6 +81,4 @@ module.exports = {
 	Bot,
 	Chat,
 	Message,
-	Question,
-	Answer,
 };
