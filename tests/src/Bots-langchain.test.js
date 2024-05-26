@@ -1,13 +1,13 @@
 const { resolve } = require("../../lib/dir.js");
 const infrastructurePath = resolve(["src", "infrastructure"]);
-const Model = require(resolve(["Models/gemini.js"], infrastructurePath));
-const Embedding = require(resolve(["Embeddings/faiss.js"], infrastructurePath));
+const Model = require(resolve(["models.js"], infrastructurePath)).Gemini;
+const Embedding = require(resolve(["embeddings.js"], infrastructurePath)).Faiss;
 const Loader = require(resolve(
-	["Loaders/langchain-documents.js"],
+	["loaders.js"],
 	infrastructurePath
-));
-const { Message } = require(resolve(["Messages.js"], infrastructurePath));
-const AIBot = require(resolve(["Bots/langchain.js"], infrastructurePath));
+)).DocumentsLoader;
+const { Message } = require(resolve(["messages.js"], infrastructurePath));
+const AIBot = require(resolve(["bots.js"], infrastructurePath)).LangchainBot;
 const { implementsInterface, Bot } = require(resolve(
 	["interfaces.js"],
 	infrastructurePath

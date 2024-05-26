@@ -6,11 +6,10 @@ const { implementsInterface, Loader } = require(dir.resolve([
 	"infrastructure",
 	"interfaces.js",
 ]));
-const extract = require(dir.resolve([
+const {PDFParse} = require(dir.resolve([
 	"src",
 	"infrastructure",
-	"Loaders",
-	"extract.js",
+	"loaders.js",
 ]));
 dotenv.config();
 
@@ -26,7 +25,7 @@ const resultFileURI = dir.resolve(
 	["extract", process.env.TEST_OUTPUT_FILENAME],
 	__dirname
 );
-const pdfParse = new extract({
+const pdfParse = new PDFParse({
 	chunkSize: 15,
 	chunkOverlap: 5,
 });

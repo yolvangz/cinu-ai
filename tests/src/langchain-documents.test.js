@@ -6,11 +6,10 @@ const { implementsInterface, Loader } = require(dir.resolve([
 	"infrastructure",
 	"interfaces.js",
 ]));
-const LangchainLoader = require(dir.resolve([
+const {DocumentsLoader} = require(dir.resolve([
 	"src",
 	"infrastructure",
-	"Loaders",
-	"langchain-documents.js",
+	"loaders.js",
 ]));
 dotenv.config();
 
@@ -26,7 +25,7 @@ const resultFileURI = dir.resolve(
 	["extract", process.env.TEST_OUTPUT_FILENAME],
 	__dirname
 );
-const langchainLoader = new LangchainLoader({
+const langchainLoader = new DocumentsLoader({
 	chunkSize: 15,
 	chunkOverlap: 5,
 });

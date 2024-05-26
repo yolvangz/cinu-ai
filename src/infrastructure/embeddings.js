@@ -70,4 +70,4 @@ class Faiss {
 	}
 }
 
-module.exports = Faiss;
+module.exports = { Faiss };

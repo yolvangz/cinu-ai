@@ -10,8 +10,9 @@ const { createRetrievalChain } = require("langchain/chains/retrieval");
 const {
 	createHistoryAwareRetriever,
 } = require("langchain/chains/history_aware_retriever");
+const { HumanMessage, AIMessage } = require("@langchain/core/messages");
 
-class Bot {
+class LangchainBot {
 	#persona;
 	#instructions;
 	#examples;
@@ -109,4 +110,4 @@ class Bot {
 		return new this.#messageInterface("bot", response.answer);
 	}
 }
-module.exports = Bot;
+module.exports = { LangchainBot };

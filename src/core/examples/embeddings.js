@@ -1,4 +1,4 @@
-const loader = require("../application/loader.js");
+const loader = require("../app.js");
 
 const question = "Qué es el álgebra?";
 
