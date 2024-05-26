@@ -6,13 +6,10 @@ const {
 	createStuffDocumentsChain,
 } = require("langchain/chains/combine_documents");
 const { StringOutputParser } = require("@langchain/core/output_parsers");
-const { HumanMessage, AIMessage } = require("@langchain/core/messages");
 const { createRetrievalChain } = require("langchain/chains/retrieval");
 const {
 	createHistoryAwareRetriever,
 } = require("langchain/chains/history_aware_retriever");
-const { CombinedMemory } = require("langchain/memory");
-const { Message } = require("../interfaces");
 
 class Bot {
 	#persona;
