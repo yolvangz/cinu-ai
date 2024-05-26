@@ -49,7 +49,7 @@ describe("Langchain Chatbot with Gemini, Faiss and langchain", () => {
 			chatModel: model.getTextModel(),
 			visionModel: model.getVisionModel(),
 			retriever: embedding,
-			messageInterface: Message
+			messageInterface: Message,
 		});
 		await chatbot.setup();
 	}, 30000);
@@ -59,10 +59,10 @@ describe("Langchain Chatbot with Gemini, Faiss and langchain", () => {
 	});
 	test("Testing with sample question", async () => {
 		const question = new Message("user", "Qué es el lenguaje?");
-		let response;
-		response = await chatbot.answer(question);
-		console.log(question.content, response);
-		expect(response).not.toBeNull();
+		let answer = await chatbot.answer(question);
+		console.log(question.content, answer.content);
+		expect(answer.from).toBe("bot");
+		expect(answer.content).toBeDefined();
 	}, 20000);
 	test("Testing with follow-up question", async () => {
 		chatbot.history = [
@@ -73,9 +73,9 @@ describe("Langchain Chatbot with Gemini, Faiss and langchain", () => {
 			),
 		];
 		const question = new Message("user", "Qué lo caracteriza?");
-		let response;
-		response = await chatbot.answer(question);
-		console.log(question.content, response);
-		expect(response).not.toBeNull();
+		let answer = await chatbot.answer(question);
+		console.log(question.content, answer.content);
+		expect(answer.from).toBe("bot");
+		expect(answer.content).toBeDefined();
 	}, 20000);
 });

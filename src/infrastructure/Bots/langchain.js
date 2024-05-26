@@ -61,7 +61,11 @@ class Bot {
 		);
 		if (messageFormat === undefined)
 			throw new Error("Unsupported native message type");
-		return this.#messageInterface.convert(nativeMessage, null, messageFormat.role);
+		return this.#messageInterface.convert(
+			nativeMessage,
+			null,
+			messageFormat.role
+		);
 	}
 	#getInstructions() {
 		return ChatPromptTemplate.fromMessages([
@@ -101,12 +105,11 @@ class Bot {
 			retriever,
 			combineDocsChain: historyAwareCombineDocsChain,
 		});
-		return (
-			await historyAwareRetrieverChain.invoke({
-				chat_history: this.#history,
-				input: question.content,
-			})
-		).answer;
+		const response = await historyAwareRetrieverChain.invoke({
+			chat_history: this.#history,
+			input: question.content,
+		});
+		return new this.#messageInterface("bot", response.answer);
 	}
 }
 module.exports = Bot;

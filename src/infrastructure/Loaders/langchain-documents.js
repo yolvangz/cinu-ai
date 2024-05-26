@@ -1,9 +1,11 @@
 const fs = require("node:fs");
+const { FileNotFoundError } = require("fs");
 const path = require("node:path");
 const { Document } = require("langchain/document");
 const { DirectoryLoader } = require("langchain/document_loaders/fs/directory");
 const { PDFLoader } = require("langchain/document_loaders/fs/pdf");
 const { DocxLoader } = require("langchain/document_loaders/fs/docx");
+const { TextLoader } = require("langchain/document_loaders/fs/text");
 const { RecursiveCharacterTextSplitter } = require("langchain/text_splitter");
 
 class DocumentsLoader {
@@ -17,7 +19,7 @@ class DocumentsLoader {
 		this.#chunkSize = this.settings.chunkSize;
 		this.#chunkOverlap = this.settings.chunkOverlap;
 	}
-	#accessFolder(uri) {
+	#access(uri) {
 		try {
 			fs.accessSync(uri);
 			return true;
@@ -31,6 +33,9 @@ class DocumentsLoader {
 	#docx(path) {
 		return new DocxLoader(path);
 	}
+	#txt(path) {
+		return new TextLoader(path);
+	}
 	#trim(text) {
 		const trimData = text.trim();
 		const lines = trimData.split(/\s*\n\s*/);
@@ -39,24 +44,34 @@ class DocumentsLoader {
 	}
 	async readFile(uri, docObject = false) {
 		let loader;
-		switch (path.extname(uri)) {
-			case ".pdf":
-				loader = this.#pdf(uri);
-				break;
-			case ".docx":
-				loader = this.#docx(uri);
-				break;
-			default:
-				throw new Error("extension not supported");
+		try {
+			switch (path.extname(uri)) {
+				case ".pdf":
+					loader = this.#pdf(uri);
+					break;
+				case ".docx":
+					loader = this.#docx(uri);
+					break;
+				case ".txt":
+					loader = this.#txt(uri);
+					break;
+				default:
+					throw new Error("extension not supported");
+			}
+			if (!this.#access(uri)) throw new Error("No existe el archivo");
+			const result = await loader.load();
+			const doc = result[0];
+			doc.pageContent = doc.pageContent ?? "";
+			doc.pageContent = this.#trim(doc.pageContent);
+			return docObject ? doc : doc.pageContent;
+		} catch (err) {
+			console.error("Error cargando archivo " + uri, err.message);
+			return null;
 		}
-		const result = await loader.load();
-		const doc = result[0];
-		doc.pageContent = this.#trim(doc.pageContent);
-		return docObject ? doc : doc.pageContent;
 	}
 	async readFolder(documentsFolder, docObject = false) {
 		let documentsObjects;
-		const checkFolder = await this.#accessFolder(documentsFolder);
+		const checkFolder = await this.#access(documentsFolder);
 		if (!checkFolder)
 			throw new Error(`No existe el directorio ${documentFolder}`);
 		const directory = new DirectoryLoader(documentsFolder, {
@@ -101,7 +116,7 @@ class DocumentsLoader {
 		return result.map((doc) => doc.pageContent);
 	}
 	async checkLocation(location) {
-		return this.#accessFolder(location);
+		return this.#access(location);
 	}
 }
 
