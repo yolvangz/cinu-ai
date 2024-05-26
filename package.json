@@ -4,6 +4,7 @@
   "description": "Gemini AI-powered virtual assistend for CINU class in UNEFA with vector embeddings",
   "main": "index.js",
   "scripts": {
+    "env": "node config-env.js",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "repository": {
