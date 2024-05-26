@@ -10,7 +10,6 @@ const { createRetrievalChain } = require("langchain/chains/retrieval");
 const {
 	createHistoryAwareRetriever,
 } = require("langchain/chains/history_aware_retriever");
-const { HumanMessage, AIMessage } = require("@langchain/core/messages");
 
 class LangchainBot {
 	#persona;
@@ -22,48 +21,23 @@ class LangchainBot {
 	#history;
 	#messageInterface;
 	#roles;
+	#translator;
+	#autoMemory;
 	constructor(settings) {
 		this.settings = settings;
 	}
-	async setup() {
+	async setup(translator) {
 		this.#persona = this.settings.persona;
 		this.#instructions = this.settings.instructions;
 		this.#examples = this.settings.examples ?? [];
 		this.#chatModel = this.settings.chatModel;
 		this.#visionModel = this.settings.visionModel;
 		this.#retriever = this.settings.retriever;
-		this.#history = this.settings.history
-			? this.settings.history.map(this.#translateMessageToNative)
-			: [];
-		this.#roles = this.settings.roles ?? [
-			{ native: AIMessage, role: "bot" },
-			{ native: HumanMessage, role: "user" },
-		];
-		this.#messageInterface = this.settings.messageInterface;
-	}
-	get history() {
-		return this.#history.map(this.#translateNativeToMessage.bind(this));
-	}
-	set history(messagesList) {
-		this.#history = messagesList.map(this.#translateMessageToNative.bind(this));
-	}
-	#translateMessageToNative(message) {
-		let nativeMessage = this.#roles.find((role) => message.from === role.role);
-		if (nativeMessage === undefined)
-			throw new Error(`Unsupported abstract message type: ${message.from}`);
-		return this.#messageInterface.convert(message, nativeMessage.native);
-	}
-	#translateNativeToMessage(nativeMessage) {
-		let messageFormat = this.#roles.find(
-			(role) => nativeMessage instanceof role.native
-		);
-		if (messageFormat === undefined)
-			throw new Error("Unsupported native message type");
-		return this.#messageInterface.convert(
-			nativeMessage,
-			null,
-			messageFormat.role
-		);
+		this.#translator = translator;
+		this.#history = translator.messageToNative(this.settings.history ?? []);
+		this.#roles = translator.roles;
+		this.#messageInterface = translator.interface;
+		this.#autoMemory = this.settings.autoMemory ?? false;
 	}
 	#getInstructions() {
 		return ChatPromptTemplate.fromMessages([
@@ -92,7 +66,7 @@ class LangchainBot {
 		});
 	}
 	async answer(question) {
-		const nativeQuestion = this.#translateMessageToNative(question);
+		const nativeQuestion = this.#translator.messageToNative(question);
 		const retriever = await this.#getRetriever();
 		const prompt = this.#getInstructions();
 		const historyAwareCombineDocsChain = await createStuffDocumentsChain({
@@ -107,7 +81,18 @@ class LangchainBot {
 			chat_history: this.#history,
 			input: question.content,
 		});
-		return new this.#messageInterface("bot", response.answer);
+		const answer = new this.#messageInterface("bot", response.answer);
+		if (this.#autoMemory) this.addMessages(question, answer);
+		return answer;
+	}
+	get history() {
+		return this.#translator.nativeToMessage(this.#history);
+	}
+	addMessages(...list) {
+		const toPush = this.#translator.messageToNative(list);
+		for (let msg of toPush) {
+			this.#history.push(msg);
+		}
 	}
 }
 module.exports = { LangchainBot };

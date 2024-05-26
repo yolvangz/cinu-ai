@@ -29,11 +29,15 @@ const Bot = {
 };
 
 const Chat = {
-	constructor: function (settings) {},
-	setup: async function () {},
+	_constructor: function (settings) {},
+	create: async function (dataAccess, Message, history) {},
+	load: async function (dataAccess, Message, id) {},
+	save: async function (dataAccess, chat) {},
+	addMessages: function (...messages) {},
+	translator: {},
 	ID: "",
 	title: "",
-	addMessage: function () {},
+	history: [],
 };
 
 const Message = {

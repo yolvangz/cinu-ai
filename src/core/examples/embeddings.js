@@ -1,9 +1,12 @@
-const loader = require("../app.js");
+const app = require("../app.js");
+
 
 const question = "Qué es el álgebra?";
 
 (async () => {
-	const {embedding} = await loader();
+	const loader = app.getFileLoader();
+	const model = app.getModels().getEmbeddingModel();
+	const embedding = await app.getEmbedding(loader, model);
 	const response = await embedding.search(question);
 	console.log(response);
 })();
