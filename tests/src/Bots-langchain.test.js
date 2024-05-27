@@ -7,6 +7,7 @@ const Loader = require(resolve(
 	infrastructurePath
 )).DocumentsLoader;
 const { Message } = require(resolve(["messages.js"], infrastructurePath));
+const { LangchainChat } = require(resolve(["chats.js"], infrastructurePath));
 const AIBot = require(resolve(["bots.js"], infrastructurePath)).LangchainBot;
 const { implementsInterface, Bot } = require(resolve(
 	["interfaces.js"],
@@ -38,10 +39,11 @@ describe("Langchain Chatbot with Gemini, Faiss and langchain", () => {
 		vectorStoreAddress: resolve([process.env.VECTOR_STORE_ADDRESS]),
 		documentsAddress: resolve([process.env.EMBEDDINGS_INPUT_ADDRESS]),
 	});
-	let chatbot;
+	let chatbot, chat;
 
-	beforeEach(async () => {
+	beforeAll(async () => {
 		await embedding.setup();
+		chat = await LangchainChat.create(null, Message);
 		chatbot = new AIBot({
 			persona: "Eres un asistente útil ",
 			instructions:
@@ -49,9 +51,8 @@ describe("Langchain Chatbot with Gemini, Faiss and langchain", () => {
 			chatModel: model.getTextModel(),
 			visionModel: model.getVisionModel(),
 			retriever: embedding,
-			messageInterface: Message,
 		});
-		await chatbot.setup();
+		await chatbot.setup(chat.translator);
 	}, 30000);
 
 	test("Class should have implemented interface correctly", () => {
