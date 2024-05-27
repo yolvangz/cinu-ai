@@ -4,7 +4,7 @@ const readline = require("readline").createInterface({
 	output: process.stdout,
 });
 
-const config = require("./env.default.json"); // Replace with path to your JSON file
+const config = require("../env.default.json"); // Replace with path to your JSON file
 
 const environments = ["production", "development"];
 

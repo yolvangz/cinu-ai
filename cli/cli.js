@@ -47,7 +47,7 @@ async function prompt(jsonBot, chatbot) {
 	const answer = await chatbot.answer(question);
 	exit = await jsonBot.answer(question);
 	exit = JSON.parse(exit.content);
-	console.log(question.content, answer.content);
+	console.log(answer.content);
 	if (exit.exit) return 0;
 	return await prompt(jsonBot, chatbot);
 }
