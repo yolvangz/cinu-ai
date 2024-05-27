@@ -40,10 +40,12 @@ class LangchainBot {
 		this.#autoMemory = this.settings.autoMemory ?? false;
 	}
 	#getInstructions() {
+		const examples = (this.#examples.length > 0) ? `Examples:\n${this.#examples.join("\n\n")}`: "";
 		return ChatPromptTemplate.fromMessages([
 			[
 				"system",
-				`${this.#persona}\n${this.#instructions}\n<context>{context}</context>`,
+				`${this.#persona}\n
+				${this.#instructions}\n${examples}\n<context>{context}</context>`,
 			],
 			new MessagesPlaceholder("chat_history"),
 			["user", "{input}"],

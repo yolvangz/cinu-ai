@@ -1,4 +1,12 @@
-const { Model, Loader, Embedding, Bot, Chat, Message, settings} = require("./loader.js");
+const {
+	Model,
+	Loader,
+	Embedding,
+	Bot,
+	Chat,
+	Message,
+	settings,
+} = require("./loader.js");
 
 const App = {
 	getModels: function () {
@@ -51,16 +59,15 @@ const App = {
 			instructions,
 			chatModel: textModel,
 			retriever: embedding,
-			autoMemory: true
+			autoMemory: true,
 		});
 		await chatbot.setup(translator);
 		return chatbot;
 	},
-	getJSONBot: async function (textModel, embedding, translator) {
-		const [persona, instructions, examples] = [
+	getJSONBot: async function (textModel, embedding, translator, specificInstructions = "", examples = []) {
+		const [persona, instructions] = [
 			"You are a natural language to JSON translator",
-			'You must interpret natural language to values in JSON format, only based on the given examples. If theres no an example, then you must return {"exit":false}. JSON must be always wrapped in {} at top, not [].',
-			`User: Ya no tengo dudas.\nModel: {"exit": true}\nUser: Muchas gracias, ya me aclaraste\nModel: {"exit":true}`,
+			`You must interpret natural language to values in JSON format, only based on the request and given examples. Ignore the context. JSON must be always wrapped in curly brackets at top, not brackets.\n${specificInstructions}`,
 		];
 		const JSONBot = new Bot({
 			persona,
