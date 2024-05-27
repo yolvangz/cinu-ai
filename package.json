@@ -1,7 +1,7 @@
 {
   "name": "cinu-ai",
   "version": "0.1.0",
-  "description": "Gemini AI-powered virtual assistend for CINU class in UNEFA with vector embeddings",
+  "description": "Gemini AI-powered virtual assistant for CINU class in UNEFA with vector embeddings",
   "main": "index.js",
   "scripts": {
     "env": "node cli/config-env.js",

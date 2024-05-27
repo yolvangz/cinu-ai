@@ -46,7 +46,11 @@ async function prompt(jsonBot, chatbot) {
 	let question = new app.Message("user", await promptValue("> "));
 	const answer = await chatbot.answer(question);
 	exit = await jsonBot.answer(question);
-	exit = JSON.parse(exit.content);
+	try {
+		exit = JSON.parse(exit.content);
+	} catch (err) {
+		exit = {exit: false};
+	}
 	console.log(answer.content);
 	if (exit.exit) return 0;
 	return await prompt(jsonBot, chatbot);
@@ -66,6 +70,7 @@ async function main() {
 			[
 				`User: Ya no tengo dudas.\nModel: "exit": true`,
 				`User: Muchas gracias, ya me aclaraste\nModel: "exit":true`,
+				`User: exit\nModel: "exit":true`,
 			]
 		),
 		app.getChatBot(models.getTextModel(), embedding, chat.translator, loader),
