@@ -1,0 +1,54 @@
+{
+  "name": "cinu-ai",
+  "version": "0.1.0",
+  "description": "Gemini AI-powered virtual assistant for CINU class in UNEFA with vector embeddings",
+  "main": "index.js",
+  "scripts": {
+    "env": "node cli/config-env.js",
+    "cli": "node cli/cli.js",
+    "create-embeddings": "node cli/createEmbeddings.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yolvangz/cinu-ai.git"
+  },
+  "keywords": [
+    "yolvangz",
+    "Luis-Marval",
+    "cinu",
+    "unefa",
+    "ai",
+    "ia",
+    "gemini",
+    "svelte",
+    "sveltekit",
+    "js",
+    "javascript",
+    "faiss-node"
+  ],
+  "author": "Yolvan G. Zambrano <yolvanzg@gmail.com> (https://github.com/yolvangz)",
+  "contributors": [
+    {
+      "name": "Luis Marval",
+      "email": "pokenithmer101@gmail.com",
+      "url": "https://github.com/Luis-Marval"
+    }
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/yolvangz/cinu-ai#readme",
+  "dependencies": {
+    "@google/generative-ai": "^0.11.1",
+    "@langchain/community": "^0.0.57",
+    "@langchain/core": "^0.1.63",
+    "@langchain/google-genai": "^0.0.13",
+    "dotenv": "^16.4.5",
+    "faiss-node": "^0.5.1",
+    "langchain": "^0.1.37",
+    "mammoth": "^1.7.2",
+    "pdf-parse": "^1.1.1"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
