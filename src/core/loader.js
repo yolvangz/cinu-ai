@@ -1,7 +1,7 @@
 const { resolve } = require("../../lib/dir.js");
 const infrastructurePath = resolve(["src", "infrastructure"]);
 const { Gemini } = require(resolve(["models.js"], infrastructurePath));
-const { DocumentsLoader } = require(resolve(
+const { DocumentsLoader, DBConect } = require(resolve(
 	["loaders.js"],
 	infrastructurePath
 ));
@@ -9,6 +9,7 @@ const { Faiss } = require(resolve(["embeddings.js"], infrastructurePath));
 const { LangchainBot } = require(resolve(["bots.js"], infrastructurePath));
 const { LangchainChat } = require(resolve(["chats.js"], infrastructurePath));
 const { Message } = require(resolve(["messages.js"], infrastructurePath));
+const { User } = require(resolve(["users.js"],infrastructurePath))
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -26,12 +27,23 @@ const settings = {
 	chatbotExamplesAddress: resolve(["bot_examples.txt"]) ?? "",
 };
 
+const dbdata = {
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DATABASE,
+  table_users: process.env.TABLE_USERS,
+};
+
 module.exports = {
 	Model: Gemini,
 	Loader: DocumentsLoader,
 	Embedding: Faiss,
 	Bot: LangchainBot,
 	Chat: LangchainChat,
+  Conection:DBConect,
+  users:User,
 	Message,
 	settings,
+  dbdata,
 };
