@@ -244,14 +244,12 @@ class DBConect{
     let consult = "SELECT * From ??";
     const box = [table]
     const result = await this.conector(consult,box)
-    console.log(result)
     return result
   }
   async readsingle(table,where){
     const consult = "SELECT * From ?? where email = ?"
     const box = [table, where]
     const result = await this.conector(consult,box)
-    console.log(result)
     return result
   }
 
@@ -269,7 +267,7 @@ class DBConect{
     }
   }
 
-  async insert(index,data,table) {
+  async insert(table,index,data) {
     let consult = "INSERT INTO ?? (??) VALUES (?)";
     const box = [table,index,data]
     const result = await this.conector(consult,box)

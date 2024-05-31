@@ -90,6 +90,25 @@ const App = {
 		await titleBot.setup(translator);
 		return titleBot;
 	},
+  database:async function(){
+    return new Conection({
+      host: settings.host,
+      user: settings.user,
+      password: settings.password,
+      database: settings.database,
+    });
+  },
+  base:function(database,email,password,cedula = null,name = null,lastname = null){
+    return new users({
+      email: email,
+      password:password,
+      cedula:cedula,
+      name: name,
+      lastname: lastname,
+      Conection: database,
+      table: settings.table_users,
+    });
+  },
 	Message: Message,
 };
 
