@@ -25,9 +25,6 @@ const settings = {
 	chatbotPersonaAddress: resolve(["bot_persona.txt"]) ?? "",
 	chatbotInstructionsAddress: resolve(["bot_instructions.txt"]) ?? "",
 	chatbotExamplesAddress: resolve(["bot_examples.txt"]) ?? "",
-};
-
-const dbdata = {
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
@@ -45,5 +42,4 @@ module.exports = {
   users:User,
 	Message,
 	settings,
-  dbdata,
 };
