@@ -55,9 +55,7 @@ function implementsInterface(obj, interfaceToCheck) {
 			typeof obj[methodOrProperty] !== typeof interfaceToCheck[methodOrProperty]
 		) {
 			console.log(
-				`${typeof obj[methodOrProperty]} !== ${typeof interfaceToCheck[
-					methodOrProperty
-				]}`
+				`${typeof obj[methodOrProperty]} !== ${typeof interfaceToCheck[methodOrProperty]}`
 			);
 			return false;
 		}

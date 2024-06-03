@@ -1,5 +1,5 @@
 import * as app from "../core/app.js";
-import {createInterface} from "node:readline";
+import { createInterface } from "node:readline";
 
 const readline = createInterface({
 	input: process.stdin,

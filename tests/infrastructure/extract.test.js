@@ -1,8 +1,8 @@
 import * as fs from "fs";
 import dotenv from "dotenv";
 import * as dir from "../../lib/dir.js";
-import * as path  from "node:path";
-import { fileURLToPath } from 'url';
+import * as path from "node:path";
+import { fileURLToPath } from "url";
 import {
 	implementsInterface,
 	Loader,

@@ -2,10 +2,13 @@ import fs from "node:fs/promises";
 import { Document } from "langchain/document";
 import { FaissStore } from "@langchain/community/vectorstores/faiss";
 import { resolve } from "../../lib/dir.js";
-import { implementsInterface, Embedding } from "../../infrastructure/interfaces.js";
-import {Faiss as FaissEmbedding} from "../../infrastructure/embeddings.js";
+import {
+	implementsInterface,
+	Embedding,
+} from "../../infrastructure/interfaces.js";
+import { Faiss as FaissEmbedding } from "../../infrastructure/embeddings.js";
 import { DocumentsLoader as Loader } from "../../infrastructure/loaders.js";
-import {Gemini as AIModel} from "../../infrastructure/models.js";
+import { Gemini as AIModel } from "../../infrastructure/models.js";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -26,8 +29,18 @@ describe("Faiss class with Gemini and langchain Document Loaders", () => {
 	let faissSettings = {
 		model: gemini.getEmbeddingModel(),
 		loader: loader,
-		documentsAddress: resolve(["tests", "infrastructure", "faiss", "documents"]),
-		vectorStoreAddress: resolve(["tests", "infrastructure", "faiss", "faiss_index"]),
+		documentsAddress: resolve([
+			"tests",
+			"infrastructure",
+			"faiss",
+			"documents",
+		]),
+		vectorStoreAddress: resolve([
+			"tests",
+			"infrastructure",
+			"faiss",
+			"faiss_index",
+		]),
 	};
 
 	beforeAll(async () => {

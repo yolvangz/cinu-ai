@@ -2,8 +2,8 @@ import { resolve } from "../lib/dir.js";
 import { Gemini as Model } from "../infrastructure/models.js";
 import { DocumentsLoader as Loader } from "../infrastructure/loaders.js";
 import { Faiss as Embedding } from "../infrastructure/embeddings.js";
-import { LangchainBot as Bot} from "../infrastructure/bots.js";
-import { LangchainChat as Chat} from "../infrastructure/chats.js";
+import { LangchainBot as Bot } from "../infrastructure/bots.js";
+import { LangchainChat as Chat } from "../infrastructure/chats.js";
 import { Message } from "../infrastructure/messages.js";
 import dotenv from "dotenv";
 dotenv.config();
@@ -22,12 +22,4 @@ const settings = {
 	chatbotExamplesAddress: resolve(["bot_examples.txt"]) ?? "",
 };
 
-export {
-	Model,
-	Loader,
-	Embedding,
-	Bot,
-	Chat,
-	Message,
-	settings,
-};
+export { Model, Loader, Embedding, Bot, Chat, Message, settings };

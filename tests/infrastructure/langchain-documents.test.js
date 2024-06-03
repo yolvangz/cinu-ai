@@ -1,10 +1,13 @@
 import * as fs from "fs";
 import * as dotenv from "dotenv";
 import * as path from "node:path";
-import { fileURLToPath } from 'url';
+import { fileURLToPath } from "url";
 import * as dir from "../../lib/dir.js";
-import { implementsInterface, Loader } from "../../infrastructure/interfaces.js";
-import {DocumentsLoader} from "../../infrastructure/loaders.js";
+import {
+	implementsInterface,
+	Loader,
+} from "../../infrastructure/interfaces.js";
+import { DocumentsLoader } from "../../infrastructure/loaders.js";
 dotenv.config();
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -76,7 +79,12 @@ test("Check some location", async () => {
 	expect(result).toBe(true);
 });
 
-const inputFolderURI = dir.resolve(["tests", "infrastructure", "faiss", "documents"]);
+const inputFolderURI = dir.resolve([
+	"tests",
+	"infrastructure",
+	"faiss",
+	"documents",
+]);
 test("Extract test-document.pdf from folder to Document object", async () => {
 	const expectedText = fs.readFileSync(expectedFileURI, "utf8").toString();
 	const docs = await langchainLoader.readFolder(inputFolderURI, true);

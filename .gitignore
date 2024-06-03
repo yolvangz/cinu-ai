@@ -74,10 +74,8 @@ web_modules/
 
 # dotenv environment variable files
 .env
-.env.development.local
-.env.test.local
-.env.production.local
-.env.local
+.env.*
+!.env.example
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
@@ -128,9 +126,19 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+
 .vscode
 output.txt
 faiss_index
 documents/
 vectorstore
 !tests/infrastructure/faiss/documents/
+.DS_Store
+/build
+/.svelte-kit
+/package
+.vercel
+.output
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
