@@ -1,5 +1,5 @@
 const { resolve } = require("../../lib/dir.js");
-const infrastructurePath = resolve(["src", "infrastructure"]);
+const infrastructurePath = resolve(["infrastructure"]);
 const Model = require(resolve(["models.js"], infrastructurePath)).Gemini;
 const Embedding = require(resolve(["embeddings.js"], infrastructurePath)).Faiss;
 const Loader = require(resolve(

@@ -1,4 +1,4 @@
-const app = require("../src/core/app.js");
+const app = require("../core/app.js");
 const readline = require("readline").createInterface({
 	input: process.stdin,
 	output: process.stdout,

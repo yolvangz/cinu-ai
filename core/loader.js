@@ -1,5 +1,5 @@
-const { resolve } = require("../../lib/dir.js");
-const infrastructurePath = resolve(["src", "infrastructure"]);
+const { resolve } = require("../lib/dir.js");
+const infrastructurePath = resolve(["infrastructure"]);
 const { Gemini } = require(resolve(["models.js"], infrastructurePath));
 const { DocumentsLoader } = require(resolve(
 	["loaders.js"],

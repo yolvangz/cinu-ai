@@ -132,3 +132,4 @@ dist
 output.txt
 faiss_index
 documents/
+!tests/infrastructure/faiss/documents/

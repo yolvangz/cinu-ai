@@ -1,6 +1,5 @@
 const { resolve } = require("../../lib/dir.js");
 const { implementsInterface, Model } = require(resolve([
-	"src",
 	"infrastructure",
 	"interfaces.js",
 ]));
@@ -8,7 +7,7 @@ const {
 	ChatGoogleGenerativeAI,
 	GoogleGenerativeAIEmbeddings,
 } = require("@langchain/google-genai");
-const { Gemini } = require(resolve(["src", "infrastructure", "models.js"]));
+const { Gemini } = require(resolve(["infrastructure", "models.js"]));
 const dotenv = require("dotenv");
 dotenv.config();
 

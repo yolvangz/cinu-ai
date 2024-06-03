@@ -2,12 +2,10 @@ const fs = require("fs");
 const dotenv = require("dotenv");
 const dir = require("../../lib/dir.js");
 const { implementsInterface, Loader } = require(dir.resolve([
-	"src",
 	"infrastructure",
 	"interfaces.js",
 ]));
 const {DocumentsLoader} = require(dir.resolve([
-	"src",
 	"infrastructure",
 	"loaders.js",
 ]));
@@ -82,7 +80,7 @@ test("Check some location", async () => {
 	expect(result).toBe(true);
 });
 
-const inputFolderURI = dir.resolve(["tests", "src", "faiss", "documents"]);
+const inputFolderURI = dir.resolve(["tests", "infrastructure", "faiss", "documents"]);
 test("Extract test-document.pdf from folder to Document object", async () => {
 	const expectedText = fs.readFileSync(expectedFileURI, "utf8").toString();
 	const docs = await langchainLoader.readFolder(inputFolderURI, true);

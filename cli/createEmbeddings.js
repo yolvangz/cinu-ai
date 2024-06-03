@@ -1,4 +1,4 @@
-const app = require("../src/core/app.js");
+const app = require("../core/app.js");
 
 const main = async () => {
 	const loader = app.getFileLoader();

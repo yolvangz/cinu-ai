@@ -3,22 +3,18 @@ const { Document } = require("langchain/document");
 const { FaissStore } = require("@langchain/community/vectorstores/faiss");
 const { resolve } = require("../../lib/dir.js");
 const { implementsInterface, Embedding } = require(resolve([
-	"src",
 	"infrastructure",
 	"interfaces.js",
 ]));
 const FaissEmbedding = require(resolve([
-	"src",
 	"infrastructure",
 	"embeddings.js",
 ])).Faiss;
 const Loader = require(resolve([
-	"src",
 	"infrastructure",
 	"loaders.js",
 ])).DocumentsLoader;
 const AIModel = require(resolve([
-	"src",
 	"infrastructure",
 	"models.js",
 ])).Gemini;
@@ -42,8 +38,8 @@ describe("Faiss class with Gemini and langchain Document Loaders", () => {
 	let faissSettings = {
 		model: gemini.getEmbeddingModel(),
 		loader: loader,
-		documentsAddress: resolve(["tests", "src", "faiss", "documents"]),
-		vectorStoreAddress: resolve(["tests", "src", "faiss", "faiss_index"]),
+		documentsAddress: resolve(["tests", "infrastructure", "faiss", "documents"]),
+		vectorStoreAddress: resolve(["tests", "infrastructure", "faiss", "faiss_index"]),
 	};
 
 	beforeAll(async () => {

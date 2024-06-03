@@ -2,12 +2,10 @@ const fs = require("fs");
 const dotenv = require("dotenv");
 const dir = require("../../lib/dir.js");
 const { implementsInterface, Loader } = require(dir.resolve([
-	"src",
 	"infrastructure",
 	"interfaces.js",
 ]));
 const {PDFParse} = require(dir.resolve([
-	"src",
 	"infrastructure",
 	"loaders.js",
 ]));
