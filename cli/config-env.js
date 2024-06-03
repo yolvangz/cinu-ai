@@ -68,28 +68,28 @@ function promptValue(message) {
 
 function promptOverride(defaultValue, message, optional = true) {
 	return new Promise((resolve) => {
-    let attempts = 0; // Track number of attempts
-    const maxAttempts = 3; // Set a maximum number of attempts
+		let attempts = 0; // Track number of attempts
+		const maxAttempts = 3; // Set a maximum number of attempts
 
-    const askForInput = () => {
-      readline.question(message, (answer) => {
-        if (answer.toLowerCase() === 'y') {
-          resolve(promptValue('Enter new value: '));
-        } else if (answer.toLowerCase() === 'n') {
-          resolve(defaultValue);
-        } else if (attempts < maxAttempts) {
-          attempts++;
-          console.error('Please enter y or N.');
-          askForInput(); // Retry if invalid and attempts not exceeded
-        } else {
-          console.error('Maximum attempts reached. Using default value.');
-          resolve(defaultValue);
-        }
-      });
-    };
+		const askForInput = () => {
+			readline.question(message, (answer) => {
+				if (answer.toLowerCase() === "y") {
+					resolve(promptValue("Enter new value: "));
+				} else if (answer.toLowerCase() === "n") {
+					resolve(defaultValue);
+				} else if (attempts < maxAttempts) {
+					attempts++;
+					console.error("Please enter y or N.");
+					askForInput(); // Retry if invalid and attempts not exceeded
+				} else {
+					console.error("Maximum attempts reached. Using default value.");
+					resolve(defaultValue);
+				}
+			});
+		};
 
-    askForInput();
-  });
+		askForInput();
+	});
 }
 
 function promptChoice(choices, key) {

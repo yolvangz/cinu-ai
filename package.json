@@ -1,59 +1,81 @@
 {
-  "name": "cinu-ai",
-  "version": "0.2.0",
-  "description": "Gemini AI-powered virtual assistant for CINU class in UNEFA with vector embeddings",
-  "main": "index.js",
-  "scripts": {
-    "env": "node cli/config-env.js",
-    "cli": "node cli/cli.js",
-    "create-embeddings": "node cli/createEmbeddings.js",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/yolvangz/cinu-ai.git"
-  },
-  "keywords": [
-    "yolvangz",
-    "Luis-Marval",
-    "cinu",
-    "unefa",
-    "ai",
-    "ia",
-    "gemini",
-    "svelte",
-    "sveltekit",
-    "js",
-    "javascript",
-    "faiss-node"
-  ],
-  "author": "Yolvan G. Zambrano <yolvanzg@gmail.com> (https://github.com/yolvangz)",
-  "contributors": [
-    {
-      "name": "Luis Marval",
-      "email": "pokenithmer101@gmail.com",
-      "url": "https://github.com/Luis-Marval"
-    },
-    {
-      "name": "Jesús Martínez",
-      "email": "jesusgabrielmc2003@gmail.com",
-      "url": "https://github.com/jgmartinezc"
-    }
-  ],
-  "license": "MIT",
-  "homepage": "https://github.com/yolvangz/cinu-ai#readme",
-  "dependencies": {
-    "@google/generative-ai": "^0.11.1",
-    "@langchain/community": "^0.0.57",
-    "@langchain/core": "^0.1.63",
-    "@langchain/google-genai": "^0.0.13",
-    "dotenv": "^16.4.5",
-    "faiss-node": "^0.5.1",
-    "langchain": "^0.1.37",
-    "mammoth": "^1.7.2",
-    "pdf-parse": "^1.1.1"
-  },
-  "devDependencies": {
-    "jest": "^29.7.0"
-  }
+	"name": "cinu-ai",
+	"version": "0.2.0",
+	"description": "Gemini AI-powered virtual assistant for CINU class in UNEFA with vector embeddings",
+	"main": "index.js",
+	"scripts": {
+		"env": "node cli/config-env.js",
+		"cli": "node cli/cli.js",
+		"create-embeddings": "node cli/createEmbeddings.js",
+		"test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview",
+		"lint": "prettier --check . && eslint .",
+		"format": "prettier --write ."
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/yolvangz/cinu-ai.git"
+	},
+	"keywords": [
+		"yolvangz",
+		"Luis-Marval",
+		"cinu",
+		"unefa",
+		"ai",
+		"ia",
+		"gemini",
+		"svelte",
+		"sveltekit",
+		"js",
+		"javascript",
+		"faiss-node"
+	],
+	"author": "Yolvan G. Zambrano <yolvanzg@gmail.com> (https://github.com/yolvangz)",
+	"contributors": [
+		{
+			"name": "Luis Marval",
+			"email": "pokenithmer101@gmail.com",
+			"url": "https://github.com/Luis-Marval"
+		},
+		{
+			"name": "Jesús Martínez",
+			"email": "jesusgabrielmc2003@gmail.com",
+			"url": "https://github.com/jgmartinezc"
+		}
+	],
+	"license": "MIT",
+	"homepage": "https://github.com/yolvangz/cinu-ai#readme",
+	"dependencies": {
+		"@google/generative-ai": "^0.11.1",
+		"@langchain/community": "^0.0.57",
+		"@langchain/core": "^0.1.63",
+		"@langchain/google-genai": "^0.0.13",
+		"dotenv": "^16.4.5",
+		"faiss-node": "^0.5.1",
+		"langchain": "^0.1.37",
+		"mammoth": "^1.7.2",
+		"pdf-parse": "^1.1.1"
+	},
+	"devDependencies": {
+		"@fontsource/fira-mono": "^4.5.10",
+		"@neoconfetti/svelte": "^1.0.0",
+		"@sveltejs/adapter-auto": "^3.0.0",
+		"@sveltejs/kit": "^2.0.0",
+		"@sveltejs/vite-plugin-svelte": "^3.0.0",
+		"@types/eslint": "^8.56.7",
+		"angular-html-parser": "^5.2.0",
+		"eslint": "^9.0.0",
+		"eslint-config-prettier": "^9.1.0",
+		"eslint-plugin-jest": "^28.5.0",
+		"eslint-plugin-svelte": "^2.36.0",
+		"globals": "^15.0.0",
+		"jest": "^29.7.0",
+		"prettier": "^3.1.1",
+		"prettier-plugin-svelte": "^3.1.2",
+		"svelte": "^4.2.7",
+		"vite": "^5.0.3"
+	},
+	"type": "module"
 }
