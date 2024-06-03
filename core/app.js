@@ -8,7 +8,7 @@ import {
 	settings,
 } from "./loader.js";
 
-function getModels() {
+export function getModels() {
 	return new Model({
 		credentials: settings.credentials,
 		options: {
@@ -22,13 +22,13 @@ function getModels() {
 		},
 	});
 }
-function getFileLoader() {
+export function getFileLoader() {
 	return new Loader({
 		chunkSize: settings.chunkSize,
 		chunkOverlap: settings.chunkOverlap,
 	});
 }
-async function getEmbedding(loader, model) {
+export async function getEmbedding(loader, model) {
 	const embedding = new Embedding({
 		vectorStoreAddress: settings.vectorStoreAddress,
 		documentsAddress: settings.documentsAddress,
@@ -38,16 +38,16 @@ async function getEmbedding(loader, model) {
 	await embedding.setup();
 	return embedding;
 }
-async function newChat(history = []) {
+export async function newChat(history = []) {
 	return await Chat.create(null, Message, history);
 }
-async function loadChat(id) {
+export async function loadChat(id) {
 	return await Chat.load(null, Message, id);
 }
-async function saveChat(chat) {
+export async function saveChat(chat) {
 	await Chat.save(null, chat);
 }
-async function getChatBot(textModel, embedding, translator, loader) {
+export async function getChatBot(textModel, embedding, translator, loader) {
 	const [persona, instructions, examples] = await Promise.all([
 		loader.readFile(settings.chatbotPersonaAddress),
 		loader.readFile(settings.chatbotInstructionsAddress),
@@ -63,7 +63,7 @@ async function getChatBot(textModel, embedding, translator, loader) {
 	await chatbot.setup(translator);
 	return chatbot;
 }
-async function getJSONBot(
+export async function getJSONBot(
 	textModel,
 	embedding,
 	translator,
@@ -84,7 +84,7 @@ async function getJSONBot(
 	await JSONBot.setup(translator);
 	return JSONBot;
 }
-async function getTitleBot(textModel, embedding, translator) {
+export async function getTitleBot(textModel, embedding, translator) {
 	const instructions =
 		"Based on the given chat, write a title that gives the user a context about what the conversation is about. The title's length can't be more than 255 characters.";
 	const titleBot = new Bot({
@@ -96,15 +96,4 @@ async function getTitleBot(textModel, embedding, translator) {
 	return titleBot;
 }
 
-export {
-	getModels,
-	getFileLoader,
-	getEmbedding,
-	getChatBot,
-	getJSONBot,
-	getTitleBot,
-	newChat,
-	loadChat,
-	saveChat,
-	Message,
-};
+export { Message };

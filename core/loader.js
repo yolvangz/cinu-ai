@@ -1,18 +1,12 @@
 import { resolve } from "../lib/dir.js";
-import { Gemini } from "../infrastructure/models.js";
-import { DocumentsLoader } from "../infrastructure/loaders.js";
-import { Faiss } from "../infrastructure/embeddings.js";
-import { LangchainBot } from "../infrastructure/bots.js";
-import { LangchainChat } from "../infrastructure/chats.js";
+import { Gemini as Model } from "../infrastructure/models.js";
+import { DocumentsLoader as Loader } from "../infrastructure/loaders.js";
+import { Faiss as Embedding } from "../infrastructure/embeddings.js";
+import { LangchainBot as Bot} from "../infrastructure/bots.js";
+import { LangchainChat as Chat} from "../infrastructure/chats.js";
 import { Message } from "../infrastructure/messages.js";
 import dotenv from "dotenv";
 dotenv.config();
-
-const Model = Gemini;
-const Loader = DocumentsLoader;
-const Embedding = Faiss;
-const Bot = LangchainBot;
-const Chat = LangchainChat;
 
 const settings = {
 	credentials: process.env.GEMINI_API_KEY,
