@@ -1,5 +1,5 @@
-const fs = require("node:fs");
-const { FaissStore } = require("@langchain/community/vectorstores/faiss");
+import * as fs from "node:fs";
+import { FaissStore } from "@langchain/community/vectorstores/faiss";
 
 class Faiss {
 	#engine;
@@ -70,4 +70,4 @@ class Faiss {
 	}
 }
 
-module.exports = { Faiss };
+export { Faiss };

@@ -132,4 +132,5 @@ dist
 output.txt
 faiss_index
 documents/
+vectorstore
 !tests/infrastructure/faiss/documents/

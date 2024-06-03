@@ -1,19 +1,12 @@
-const { resolve } = require("../../lib/dir.js");
-const infrastructurePath = resolve(["infrastructure"]);
-const Model = require(resolve(["models.js"], infrastructurePath)).Gemini;
-const Embedding = require(resolve(["embeddings.js"], infrastructurePath)).Faiss;
-const Loader = require(resolve(
-	["loaders.js"],
-	infrastructurePath
-)).DocumentsLoader;
-const { Message } = require(resolve(["messages.js"], infrastructurePath));
-const { LangchainChat } = require(resolve(["chats.js"], infrastructurePath));
-const AIBot = require(resolve(["bots.js"], infrastructurePath)).LangchainBot;
-const { implementsInterface, Bot } = require(resolve(
-	["interfaces.js"],
-	infrastructurePath
-));
-const dotenv = require("dotenv");
+import { resolve } from "../../lib/dir.js";
+import { Gemini as Model } from "../../infrastructure/models.js";
+import { Faiss as Embedding } from "../../infrastructure/embeddings.js";
+import { DocumentsLoader as Loader } from "../../infrastructure/loaders.js";
+import { Message } from "../../infrastructure/messages.js";
+import { LangchainChat } from "../../infrastructure/chats.js";
+import { LangchainBot as AIBot } from "../../infrastructure/bots.js";
+import { implementsInterface, Bot } from "../../infrastructure/interfaces.js";
+import * as dotenv from "dotenv";
 dotenv.config();
 
 describe("Langchain Chatbot with Gemini, Faiss and langchain", () => {
@@ -36,8 +29,13 @@ describe("Langchain Chatbot with Gemini, Faiss and langchain", () => {
 	const embedding = new Embedding({
 		model: model.getEmbeddingModel(),
 		loader: loader,
-		vectorStoreAddress: resolve([process.env.VECTOR_STORE_ADDRESS]),
-		documentsAddress: resolve([process.env.EMBEDDINGS_INPUT_ADDRESS]),
+		vectorStoreAddress: resolve([
+			"tests",
+			"infrastructure",
+			"bot",
+			"vectorstore",
+		]),
+		documentsAddress: resolve(["tests", "infrastructure", "bot", "documents"]),
 	});
 	let chatbot, chat;
 
@@ -66,13 +64,14 @@ describe("Langchain Chatbot with Gemini, Faiss and langchain", () => {
 		expect(answer.content).toBeDefined();
 	}, 20000);
 	test("Testing with follow-up question", async () => {
-		chatbot.history = [
+		chatbot.reset();
+		chatbot.addMessages(
 			new Message("user", "¿Qué es el lenguaje?"),
 			new Message(
 				"bot",
 				"El lenguaje es el conjunto de sonidos articulados con que el hombre manifiesta lo que piensa o siente"
-			),
-		];
+			)
+		);
 		const question = new Message("user", "Qué lo caracteriza?");
 		let answer = await chatbot.answer(question);
 		console.log(question.content, answer.content);

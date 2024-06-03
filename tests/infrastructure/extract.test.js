@@ -1,15 +1,16 @@
-const fs = require("fs");
-const dotenv = require("dotenv");
-const dir = require("../../lib/dir.js");
-const { implementsInterface, Loader } = require(dir.resolve([
-	"infrastructure",
-	"interfaces.js",
-]));
-const {PDFParse} = require(dir.resolve([
-	"infrastructure",
-	"loaders.js",
-]));
+import * as fs from "fs";
+import dotenv from "dotenv";
+import * as dir from "../../lib/dir.js";
+import * as path  from "node:path";
+import { fileURLToPath } from 'url';
+import {
+	implementsInterface,
+	Loader,
+} from "../../infrastructure/interfaces.js";
+import { PDFParse } from "../../infrastructure/loaders.js";
 dotenv.config();
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const inputFileURI = dir.resolve(
 	["extract", process.env.TEST_PDF_FILENAME],

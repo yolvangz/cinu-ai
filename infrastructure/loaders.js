@@ -1,16 +1,16 @@
 // Common dependencies
-const fs = require("node:fs");
-const path = require("node:path");
+import * as fs from "node:fs";
+import * as path from "node:path";
 // DocumentLoader dependencies
-const { Document } = require("langchain/document");
-const { DirectoryLoader } = require("langchain/document_loaders/fs/directory");
-const { PDFLoader } = require("langchain/document_loaders/fs/pdf");
-const { DocxLoader } = require("langchain/document_loaders/fs/docx");
-const { TextLoader } = require("langchain/document_loaders/fs/text");
-const { RecursiveCharacterTextSplitter } = require("langchain/text_splitter");
+import { Document } from "langchain/document";
+import { DirectoryLoader } from "langchain/document_loaders/fs/directory";
+import { PDFLoader } from "langchain/document_loaders/fs/pdf";
+import { DocxLoader } from "langchain/document_loaders/fs/docx";
+import { TextLoader } from "langchain/document_loaders/fs/text";
+import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 // PDFparse aditional dependencies
-const fsPromise = require("node:fs/promises");
-const pdfParse = require("pdf-parse");
+import * as fsPromise from "node:fs/promises";
+import pdfParse from "pdf-parse";
 
 class PDFParse {
 	constructor(settings) {
@@ -205,4 +205,4 @@ class DocumentsLoader {
 	}
 }
 
-module.exports = { DocumentsLoader, PDFParse };
+export { DocumentsLoader, PDFParse };

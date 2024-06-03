@@ -1,22 +1,24 @@
-const { resolve } = require("../lib/dir.js");
-const infrastructurePath = resolve(["infrastructure"]);
-const { Gemini } = require(resolve(["models.js"], infrastructurePath));
-const { DocumentsLoader } = require(resolve(
-	["loaders.js"],
-	infrastructurePath
-));
-const { Faiss } = require(resolve(["embeddings.js"], infrastructurePath));
-const { LangchainBot } = require(resolve(["bots.js"], infrastructurePath));
-const { LangchainChat } = require(resolve(["chats.js"], infrastructurePath));
-const { Message } = require(resolve(["messages.js"], infrastructurePath));
-const dotenv = require("dotenv");
+import { resolve } from "../lib/dir.js";
+import { Gemini } from "../infrastructure/models.js";
+import { DocumentsLoader } from "../infrastructure/loaders.js";
+import { Faiss } from "../infrastructure/embeddings.js";
+import { LangchainBot } from "../infrastructure/bots.js";
+import { LangchainChat } from "../infrastructure/chats.js";
+import { Message } from "../infrastructure/messages.js";
+import dotenv from "dotenv";
 dotenv.config();
+
+const Model = Gemini;
+const Loader = DocumentsLoader;
+const Embedding = Faiss;
+const Bot = LangchainBot;
+const Chat = LangchainChat;
 
 const settings = {
 	credentials: process.env.GEMINI_API_KEY,
-	textModel: process.env.GEMINI_CHAT_MODEL ?? "gemini-1.0-pro",
-	textTemperature: Number(process.env.GEMINI_CHAT_TEMPERATURE) ?? 1,
-	embeddingModel: process.env.GEMINI_EMBEDDING_MODEL ?? "embedding-001",
+	textModel: process.env.GEMINI_CHAT_MODEL,
+	textTemperature: Number(process.env.GEMINI_CHAT_TEMPERATURE),
+	embeddingModel: process.env.GEMINI_EMBEDDING_MODEL,
 	chunkSize: Number(process.env.CHUNK_SIZE),
 	chunkOverlap: Number(process.env.CHUNK_OVERLAP),
 	vectorStoreAddress: resolve([process.env.VECTOR_STORE_ADDRESS]),
@@ -26,12 +28,12 @@ const settings = {
 	chatbotExamplesAddress: resolve(["bot_examples.txt"]) ?? "",
 };
 
-module.exports = {
-	Model: Gemini,
-	Loader: DocumentsLoader,
-	Embedding: Faiss,
-	Bot: LangchainBot,
-	Chat: LangchainChat,
+export {
+	Model,
+	Loader,
+	Embedding,
+	Bot,
+	Chat,
 	Message,
 	settings,
 };

@@ -1,4 +1,4 @@
-const { HumanMessage, AIMessage } = require("@langchain/core/messages");
+import { HumanMessage, AIMessage } from "@langchain/core/messages";
 
 class LangchainChat {
 	#chat_id;
@@ -111,4 +111,4 @@ class LangchainChat {
 		};
 	}
 }
-module.exports = { LangchainChat };
+export { LangchainChat };

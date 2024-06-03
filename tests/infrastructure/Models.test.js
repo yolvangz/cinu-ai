@@ -1,14 +1,11 @@
-const { resolve } = require("../../lib/dir.js");
-const { implementsInterface, Model } = require(resolve([
-	"infrastructure",
-	"interfaces.js",
-]));
-const {
+import { resolve } from "../../lib/dir.js";
+import { implementsInterface, Model } from "../../infrastructure/interfaces.js";
+import {
 	ChatGoogleGenerativeAI,
 	GoogleGenerativeAIEmbeddings,
-} = require("@langchain/google-genai");
-const { Gemini } = require(resolve(["infrastructure", "models.js"]));
-const dotenv = require("dotenv");
+} from "@langchain/google-genai";
+import { Gemini } from "../../infrastructure/models.js";
+import dotenv from "dotenv";
 dotenv.config();
 
 describe("Gemini", () => {

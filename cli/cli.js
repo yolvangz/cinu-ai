@@ -1,5 +1,7 @@
-const app = require("../core/app.js");
-const readline = require("readline").createInterface({
+import * as app from "../core/app.js";
+import {createInterface} from "node:readline";
+
+const readline = createInterface({
 	input: process.stdin,
 	output: process.stdout,
 });
@@ -49,7 +51,7 @@ async function prompt(jsonBot, chatbot) {
 	try {
 		exit = JSON.parse(exit.content);
 	} catch (err) {
-		exit = {exit: false};
+		exit = { exit: false };
 	}
 	console.log(answer.content);
 	if (exit.exit) return 0;

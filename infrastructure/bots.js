@@ -1,15 +1,11 @@
-const {
+import {
 	ChatPromptTemplate,
 	MessagesPlaceholder,
-} = require("@langchain/core/prompts");
-const {
-	createStuffDocumentsChain,
-} = require("langchain/chains/combine_documents");
-const { StringOutputParser } = require("@langchain/core/output_parsers");
-const { createRetrievalChain } = require("langchain/chains/retrieval");
-const {
-	createHistoryAwareRetriever,
-} = require("langchain/chains/history_aware_retriever");
+} from "@langchain/core/prompts";
+import { createStuffDocumentsChain } from "langchain/chains/combine_documents";
+import { StringOutputParser } from "@langchain/core/output_parsers";
+import { createRetrievalChain } from "langchain/chains/retrieval";
+import { createHistoryAwareRetriever } from "langchain/chains/history_aware_retriever";
 
 class LangchainBot {
 	#persona;
@@ -40,7 +36,10 @@ class LangchainBot {
 		this.#autoMemory = this.settings.autoMemory ?? false;
 	}
 	#getInstructions() {
-		const examples = (this.#examples.length > 0) ? `Examples:\n${this.#examples.join("\n\n")}`: "";
+		const examples =
+			this.#examples.length > 0
+				? `Examples:\n${this.#examples.join("\n\n")}`
+				: "";
 		return ChatPromptTemplate.fromMessages([
 			[
 				"system",
@@ -96,5 +95,8 @@ class LangchainBot {
 			this.#history.push(msg);
 		}
 	}
+	reset() {
+		this.#history = [];
+	}
 }
-module.exports = { LangchainBot };
+export { LangchainBot };

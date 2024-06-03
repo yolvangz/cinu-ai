@@ -26,6 +26,8 @@ const Bot = {
 	setup: async function () {},
 	history: [],
 	answer: function (question) {},
+	addMessages: function (...list) {},
+	reset: function () {},
 };
 
 const Chat = {
@@ -73,12 +75,4 @@ function implementsInterface(obj, interfaceToCheck) {
 	return true;
 }
 
-module.exports = {
-	implementsInterface,
-	Model,
-	Embedding,
-	Loader,
-	Bot,
-	Chat,
-	Message,
-};
+export { implementsInterface, Model, Embedding, Loader, Bot, Chat, Message };

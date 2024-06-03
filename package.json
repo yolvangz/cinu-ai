@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "name": "cinu-ai",
   "version": "0.2.0",
   "description": "Gemini AI-powered virtual assistant for CINU class in UNEFA with vector embeddings",

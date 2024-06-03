@@ -1,24 +1,12 @@
-const fs = require("node:fs/promises");
-const { Document } = require("langchain/document");
-const { FaissStore } = require("@langchain/community/vectorstores/faiss");
-const { resolve } = require("../../lib/dir.js");
-const { implementsInterface, Embedding } = require(resolve([
-	"infrastructure",
-	"interfaces.js",
-]));
-const FaissEmbedding = require(resolve([
-	"infrastructure",
-	"embeddings.js",
-])).Faiss;
-const Loader = require(resolve([
-	"infrastructure",
-	"loaders.js",
-])).DocumentsLoader;
-const AIModel = require(resolve([
-	"infrastructure",
-	"models.js",
-])).Gemini;
-const dotenv = require("dotenv");
+import fs from "node:fs/promises";
+import { Document } from "langchain/document";
+import { FaissStore } from "@langchain/community/vectorstores/faiss";
+import { resolve } from "../../lib/dir.js";
+import { implementsInterface, Embedding } from "../../infrastructure/interfaces.js";
+import {Faiss as FaissEmbedding} from "../../infrastructure/embeddings.js";
+import { DocumentsLoader as Loader } from "../../infrastructure/loaders.js";
+import {Gemini as AIModel} from "../../infrastructure/models.js";
+import dotenv from "dotenv";
 dotenv.config();
 
 describe("Faiss class with Gemini and langchain Document Loaders", () => {
@@ -59,10 +47,10 @@ describe("Faiss class with Gemini and langchain Document Loaders", () => {
 	test("should search", async () => {
 		const query = "Yolo";
 		const response = await faiss.search(query);
-		text = response.reduce((acc, result) => {
+		const text = response.reduce((acc, result) => {
 			return acc + result.pageContent;
 		}, "");
 		console.log("content of search", text);
 		expect(text.search(query)).toBeGreaterThan(-1);
-	});
+	}, 10000);
 });

@@ -1,16 +1,13 @@
-const fs = require("fs");
-const dotenv = require("dotenv");
-const dir = require("../../lib/dir.js");
-const { implementsInterface, Loader } = require(dir.resolve([
-	"infrastructure",
-	"interfaces.js",
-]));
-const {DocumentsLoader} = require(dir.resolve([
-	"infrastructure",
-	"loaders.js",
-]));
+import * as fs from "fs";
+import * as dotenv from "dotenv";
+import * as path from "node:path";
+import { fileURLToPath } from 'url';
+import * as dir from "../../lib/dir.js";
+import { implementsInterface, Loader } from "../../infrastructure/interfaces.js";
+import {DocumentsLoader} from "../../infrastructure/loaders.js";
 dotenv.config();
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const inputFileURI = dir.resolve(
 	["extract", process.env.TEST_PDF_FILENAME],
 	__dirname
@@ -71,7 +68,6 @@ test("Extract test-document.pdf to Document object and chunk it", async () => {
 		"para todos los",
 		"los idiomas.",
 	];
-	console.log(chunked);
 	expect(chunked.map((chunk) => chunk.pageContent)).toStrictEqual(expected);
 });
 
@@ -84,7 +80,6 @@ const inputFolderURI = dir.resolve(["tests", "infrastructure", "faiss", "documen
 test("Extract test-document.pdf from folder to Document object", async () => {
 	const expectedText = fs.readFileSync(expectedFileURI, "utf8").toString();
 	const docs = await langchainLoader.readFolder(inputFolderURI, true);
-	console.log(docs);
 	for (const doc of docs) {
 		expect(doc.pageContent).toBe(expectedText);
 	}

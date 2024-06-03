@@ -1,7 +1,7 @@
-const {
+import {
 	ChatGoogleGenerativeAI,
 	GoogleGenerativeAIEmbeddings,
-} = require("@langchain/google-genai");
+} from "@langchain/google-genai";
 
 class Gemini {
 	constructor(settings) {
@@ -34,4 +34,4 @@ class Gemini {
 	}
 }
 
-module.exports = { Gemini };
+export { Gemini };

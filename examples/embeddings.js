@@ -1,5 +1,4 @@
-const app = require("../core/app.js");
-
+import * as app from "../core/app.js";
 
 const question = "Qué es el álgebra?";
 

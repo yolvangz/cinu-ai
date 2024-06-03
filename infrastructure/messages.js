@@ -28,4 +28,4 @@ class Message {
 	}
 }
 
-module.exports = { Message };
+export { Message };
