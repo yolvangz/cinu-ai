@@ -17,4 +17,5 @@ images
 *.md
 LICENSE
 .npmrc
-*.css
+*.svg
+*.woff2

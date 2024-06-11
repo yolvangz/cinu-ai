@@ -35,6 +35,12 @@
 			}
 		},
 		{
+			"files": "*.scss",
+			"options": {
+				"parser": "scss"
+			}
+		},
+		{
 			"files": "*.html",
 			"options": {
 				"parser": "html"

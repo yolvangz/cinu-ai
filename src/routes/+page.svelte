@@ -39,6 +39,9 @@
 
 	h1 {
 		width: 100%;
+		font-family: var(--title-font-family);
+		text-transform: uppercase;
+		font-weight: 700;
 	}
 
 	.welcome {
