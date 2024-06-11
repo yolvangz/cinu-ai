@@ -1,8 +1,9 @@
 <script>
+	import { pageMeta } from "./stores";
 	import { browser } from "$app/environment";
 	import { onMount } from "svelte";
 	import "../app.scss";
-	import Header from "./Header.svelte";
+	import Header from "./components/Header.svelte";
 
 	onMount(async () => {
 		if (!browser) return;
@@ -17,16 +18,35 @@
 	});
 </script>
 
-<div class="app">
-	<Header></Header>
+<svelte:head>
+	{#if $pageMeta.title}
+		<title>{$pageMeta.title} | CINU.ai</title>
+	{:else}
+		<title>CINU.ai</title>
+	{/if}
+	{#if $pageMeta.description}
+		<meta name="description" content={$pageMeta.description} />
+	{/if}
+</svelte:head>
 
+<div class="app" aria-roledescription="app">
+	<Header></Header>
 	<main>
 		<slot></slot>
 	</main>
 
-	<footer>
-		<p>
-			visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit
-		</p>
+	<footer class="fixed-bottom">
+		<div class="container">
+			<p class="text-center">
+				visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit
+			</p>
+		</div>
 	</footer>
 </div>
+
+<style>
+	.app,
+	main {
+		height: calc(100vh - 11vh);
+	}
+</style>
