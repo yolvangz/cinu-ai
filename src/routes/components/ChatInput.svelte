@@ -3,11 +3,11 @@
 	const buttonSize = 24;
 </script>
 
-<div class="card text-bg-light w-100">
+<div class="card text-bg-light w-100 shadow">
 	<div class="card-body p-3">
 		<form on:submit|preventDefault class="d-flex">
 			<textarea
-				class="form-control form-control-plaintext chat-input h-100"
+				class="form-control form-control-plaintext chat-input h-100 py-0"
 				name="chatInput"
 				placeholder="Haga sus preguntas"
 			></textarea>

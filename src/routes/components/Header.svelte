@@ -3,7 +3,7 @@
 	import logo from "$lib/images/cinu-ai-sm.png";
 </script>
 
-<header class="">
+<header>
 	<nav class="navbar navbar-expand-lg shadow">
 		<div class="container justify-content-center">
 			<a class="navbar-brand d-inline-flex align-items-center" href="/">
@@ -22,6 +22,7 @@
 	$logo-font-size: 2.25rem;
 	.navbar {
 		max-height: 11vh;
+		border-radius: 0 0 var(--bs-border-radius-xl) var(--bs-border-radius-xl);
 		.navbar-brand {
 			color: var(--bs-body-color);
 			text-transform: uppercase;
