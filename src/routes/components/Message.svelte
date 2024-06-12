@@ -1,0 +1,47 @@
+<script>
+	export let from;
+	const direction = from === "user" ? "right" : "left";
+	const colors = ["primary", "warning", "danger", "success"];
+	function randomColor() {
+		return `border-${colors[Math.floor(Math.random() * colors.length)]}`;
+	}
+</script>
+
+{#if from === "bot"}
+	<div class="message {direction} mb-4">
+		<article class="message-body border {randomColor()} p-3">
+			<slot />
+		</article>
+	</div>
+{:else}
+	<div class="message {direction} mb-4">
+		<article class="message-body border p-3">
+			<slot />
+		</article>
+	</div>
+{/if}
+
+<style lang="scss">
+	.message {
+		display: flex;
+		.message-body {
+			background-color: var(--bs-body-bg);
+			box-shadow: var(--bs-box-shadow-sm);
+			border-radius: var(--bs-border-radius-xl);
+			min-height: 100px;
+			position: relative;
+			max-width: 70%;
+			flex-grow: 1;
+		}
+	}
+
+	.message.right {
+		/* Styles for messages originating from the right */
+		justify-content: flex-end;
+	}
+
+	.message.left {
+		/* Styles for messages originating from the left */
+		justify-content: flex-start;
+	}
+</style>
