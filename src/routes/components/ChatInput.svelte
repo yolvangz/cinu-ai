@@ -5,6 +5,7 @@
 	const buttonSize = 28;
 
 	export let disabled = false;
+	export let value = "";
 	let form;
 	let placeholder =
 		"Haga sus preguntas (Presione Shift + Enter para insertar una nueva línea)";
@@ -27,6 +28,7 @@
 							class="form-control form-control-plaintext chat-input h-100 py-0 scroll-container"
 							name="chatInput"
 							{placeholder}
+							{value}
 							on:keydown={handleKeyInput}
 						></textarea>
 						<Button

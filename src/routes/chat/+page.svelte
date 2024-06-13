@@ -1,4 +1,5 @@
 <script>
+	import DOMPurify from "isomorphic-dompurify";
 	import { history, pageMeta } from "../stores";
 	import ChatInput from "../components/ChatInput.svelte";
 	import ChatHistory from "../components/ChatHistory.svelte";
@@ -10,12 +11,14 @@
 
 	export let data;
 	history.set(data.chat.history);
+	let value;
 	let disabled = false;
 	let before, after;
 
 	async function handleChatInput(event) {
 		const question = new FormData(event.target).get("chatInput").trim();
-		if (disabled || question.length === 0) return;
+		const validatingQuestion = DOMPurify.sanitize(question);
+		if (disabled || validatingQuestion.length === 0) return;
 		// reset and block input
 		event.target.reset();
 		disabled = !disabled;
@@ -36,6 +39,8 @@
 			disabled = !disabled;
 		} catch (error) {
 			console.error(error);
+			history.removeLastMessage();
+			value = question;
 			disabled = !disabled;
 		}
 	}
@@ -45,14 +50,11 @@
 			window.getComputedStyle(container, null).getPropertyValue("height")
 		);
 		const scrollTop = container.scrollTop;
-		const elementHeight = before.offsetHeight; // Height of the element
+		const elementHeight = 25; // Height of the element
 
 		const newTop = scrollTop * 1; // Adjust factor (play with this value for effect)
 		// Ensure the element stays within viewport bounds
-		const newPosition = Math.min(
-			Math.max(newTop, 0),
-			innerHeight - elementHeight
-		);
+		const newPosition = Math.max(newTop, 0);
 		before.style.top = `${newPosition}px`;
 		after.style.bottom = `-${newPosition}px`;
 	}
@@ -80,7 +82,7 @@
 		<span bind:this={after} class="after"></span>
 	</section>
 	<div class="mt-auto pb-3">
-		<ChatInput on:submit={handleChatInput} {disabled} />
+		<ChatInput on:submit={handleChatInput} {disabled} {value} />
 	</div>
 </div>
 

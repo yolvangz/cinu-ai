@@ -9,6 +9,7 @@ function createHistory() {
 		subscribe,
 		addMessage: (from, content) =>
 			update((history) => [...history, { from, content }]),
+		removeLastMessage: () => update((history) => history.slice(0, -1)),
 		set: (history) => set(history),
 		reset: () => set([]),
 	};

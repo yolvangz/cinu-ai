@@ -18,6 +18,6 @@
 
 <div class="d-flex flex-column px-3 py-2">
 	{#each $history as message (message)}
-		<Message from={message.from}>{@html contentParse(message.content)}</Message>
+		<Message from={message.from} content={message.content} />
 	{/each}
 </div>

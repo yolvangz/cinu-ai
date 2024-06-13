@@ -1,22 +1,26 @@
 <script>
-	export let from;
+	import { marked } from "marked";
+	import DOMPurify from "isomorphic-dompurify";
+
+	export let from, content;
 	const direction = from === "user" ? "right" : "left";
 	const colors = ["red", "blue", "yellow", "green"];
 	function randomColor() {
 		return colors[Math.floor(Math.random() * colors.length)];
 	}
+	$: textContent = DOMPurify.sanitize(marked.parse(content));
 </script>
 
 {#if from === "bot"}
 	<div class="message {direction} mb-4">
 		<article class="message-body gradient-box {randomColor()} p-3">
-			<slot />
+			{@html textContent}
 		</article>
 	</div>
 {:else}
 	<div class="message {direction} mb-4">
 		<article class="message-body border p-3">
-			<slot />
+			{@html textContent}
 		</article>
 	</div>
 {/if}
