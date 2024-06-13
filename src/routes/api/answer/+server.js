@@ -39,13 +39,11 @@ export async function POST({ request }) {
 		loader,
 		false
 	);
-
+	// return answer
 	const question = new app.Message("user", body.question);
 	const answer = await chatbot.answer(question);
-	chat.addMessages(question, answer);
-	// return answer
 	return json({
+		question: destructureMessage(question),
 		answer: destructureMessage(answer),
-		history: chat.history.map(destructureMessage),
 	});
 }

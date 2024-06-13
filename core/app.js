@@ -47,7 +47,13 @@ export async function loadChat(id) {
 export async function saveChat(chat) {
 	await Chat.save(null, chat);
 }
-export async function getChatBot(textModel, embedding, translator, loader, autoMemory = true) {
+export async function getChatBot(
+	textModel,
+	embedding,
+	translator,
+	loader,
+	autoMemory = true
+) {
 	const [persona, instructions, examples] = await Promise.all([
 		loader.readFile(settings.chatbotPersonaAddress),
 		loader.readFile(settings.chatbotInstructionsAddress),

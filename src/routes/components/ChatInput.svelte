@@ -2,6 +2,7 @@
 	import Send from "svelte-bootstrap-icons/lib/Send.svelte";
 	const buttonSize = 24;
 
+	export let disabled = false;
 	let form;
 	let placeholder =
 		"Haga sus preguntas (Presione Shift + Enter para insertar una nueva línea)";
@@ -13,20 +14,22 @@
 
 <div class="card text-bg-light w-100 shadow">
 	<div class="card-body p-3">
-		<form on:submit|preventDefault bind:this={form} class="d-flex">
-			<textarea
-				class="form-control form-control-plaintext chat-input h-100 py-0"
-				name="chatInput"
-				{placeholder}
-				on:keydown={handleKeyInput}
-			></textarea>
-			<button
-				type="submit"
-				class="btn btn-link btn-sm align-self-end"
-				title="Hacer pregunta"
-			>
-				<Send width={buttonSize} height={buttonSize} />
-			</button>
+		<form on:submit|preventDefault bind:this={form}>
+			<fieldset {disabled} class="d-flex">
+				<textarea
+					class="form-control form-control-plaintext chat-input h-100 py-0"
+					name="chatInput"
+					{placeholder}
+					on:keydown={handleKeyInput}
+				></textarea>
+				<button
+					type="submit"
+					class="btn btn-link btn-sm align-self-end"
+					title="Hacer pregunta"
+				>
+					<Send width={buttonSize} height={buttonSize} />
+				</button>
+			</fieldset>
 		</form>
 	</div>
 </div>
