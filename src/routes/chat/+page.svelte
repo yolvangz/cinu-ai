@@ -6,34 +6,18 @@
 	pageMeta.set({
 		description: "CINU.ai",
 	});
-	let history = [
-		{
-			from: "user",
-			content: "Pregunta cualquiera",
-		},
-		{
-			from: "bot",
-			content: "Respuesta cualquiera",
-		},
-		{
-			from: "user",
-			content: "Pregunta cualquiera",
-		},
-		{
-			from: "bot",
-			content: "Respuesta cualquiera",
-		},
-		{
-			from: "user",
-			content: "Pregunta cualquiera",
-		},
-		{
-			from: "bot",
-			content: "Respuesta cualquiera",
-		},
-	];
+
+	export let data;
+	let history = data.chat.history;
+
+	function addMessage(from, content) {
+		history = [...history, { from, content }];
+	}
+
 	function handleChatInput(event) {
 		const question = new FormData(event.target).get("chatInput").trim();
+		addMessage("user", question);
+		event.target.reset();
 		console.log(question);
 	}
 </script>
@@ -42,7 +26,9 @@
 	class="container d-flex flex-column justify-content-between h-100 pt-3 pb-5"
 >
 	<section id="chatHistory" class="flex-grow-1 mt-4 mb-3">
-		<ChatHistory {history} />
+		{#await history then}
+			<ChatHistory {history} />
+		{/await}
 	</section>
 	<div class="mt-auto pb-3">
 		<ChatInput on:submit={handleChatInput} />
