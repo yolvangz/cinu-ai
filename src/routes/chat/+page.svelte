@@ -63,7 +63,7 @@
 >
 	<section
 		id="chatHistory"
-		class="background-gradient flex-grow-1 mt-4 mb-3 d-flex flex-column justify-content-between"
+		class="background-gradient flex-grow-1 mt-4 mb-3 d-flex flex-column justify-content-between scroll-container"
 		on:scroll={updateScrolling}
 	>
 		<span bind:this={before} class="before"></span>
@@ -83,12 +83,6 @@
 		<ChatInput on:submit={handleChatInput} {disabled} />
 	</div>
 </div>
-<button
-	on:click={() => (disabled = !disabled)}
-	type="button"
-	id="toggle"
-	class="btn btn-primary position-fixed bottom-0 end-0">Toggle</button
->
 
 <style lang="scss">
 	#chatHistory {
@@ -113,27 +107,6 @@
 			background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #fff 100%);
 			z-index: 1;
 		}
-		&::-webkit-scrollbar {
-			width: 8px; /* Adjust width as desired */
-			height: 8px; /* Adjust height as desired */
-			background-color: transparent; /* Removes background color */
-		}
-		/* Style the scrollbar track */
-		&::-webkit-scrollbar-track {
-			background-color: #f5f5f5; /* Set a light background for the track */
-			border-radius: 10px; /* Add rounded corners */
-		}
-
-		/* Style the scrollbar thumb */
-		&::-webkit-scrollbar-thumb {
-			background-color: #cccccc; /* Set a light color for the thumb */
-			border-radius: 10px; /* Add rounded corners */
-		}
-
-		/* Style the thumb on hover (optional) */
-		&::-webkit-scrollbar-thumb:hover {
-			background-color: #aaaaaa; /* Change color on hover (optional) */
-		}
 	}
 	.loading-wrapper {
 		position: sticky;
@@ -144,8 +117,5 @@
 			top: 80px;
 		}
 		background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #fff 40%);
-	}
-	#toggle {
-		z-index: 100000;
 	}
 </style>
