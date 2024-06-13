@@ -1,47 +1,88 @@
 <script>
-	import { pageMeta } from "../stores";
+	import DOMPurify from "isomorphic-dompurify";
+	import { history, pageMeta } from "../stores";
 	import ChatInput from "../components/ChatInput.svelte";
 	import ChatHistory from "../components/ChatHistory.svelte";
+	import Loader from "../components/Loader.svelte";
 
 	pageMeta.set({
 		description: "CINU.ai",
 	});
-	let history = [
-		{
-			from: "user",
-			content: "Pregunta cualquiera",
-		},
-		{
-			from: "bot",
-			content: "Respuesta cualquiera",
-		},
-		{
-			from: "user",
-			content: "Pregunta cualquiera",
-		},
-		{
-			from: "bot",
-			content: "Respuesta cualquiera",
-		},
-		{
-			from: "user",
-			content: "Pregunta cualquiera",
-		},
-		{
-			from: "bot",
-			content: "Respuesta cualquiera",
-		},
-	];
+
+	export let data;
+	history.set(data.chat.history);
+	let value;
+	let disabled = false;
+	let before, after;
+
+	async function handleChatInput(event) {
+		const question = new FormData(event.target).get("chatInput").trim();
+		const validatingQuestion = DOMPurify.sanitize(question);
+		if (disabled || validatingQuestion.length === 0) return;
+		// reset and block input
+		event.target.reset();
+		disabled = !disabled;
+		// update chat history
+		const lastHistory = $history;
+		history.addMessage("user", question);
+		// get answer
+		try {
+			const response = await fetch("/api/answer", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ history: lastHistory, question }),
+			});
+			const res = await response.json();
+			history.addMessage(res.answer.from, res.answer.content);
+			disabled = !disabled;
+		} catch (error) {
+			console.error(error);
+			history.removeLastMessage();
+			value = question;
+			disabled = !disabled;
+		}
+	}
+	function updateScrolling(event) {
+		const container = event.target;
+		const innerHeight = parseInt(
+			window.getComputedStyle(container, null).getPropertyValue("height")
+		);
+		const scrollTop = container.scrollTop;
+		const elementHeight = 25; // Height of the element
+
+		const newTop = scrollTop * 1; // Adjust factor (play with this value for effect)
+		// Ensure the element stays within viewport bounds
+		const newPosition = Math.max(newTop, 0);
+		before.style.top = `${newPosition}px`;
+		after.style.bottom = `-${newPosition}px`;
+	}
 </script>
 
 <div
 	class="container d-flex flex-column justify-content-between h-100 pt-3 pb-5"
 >
-	<section id="chatHistory" class="flex-grow-1 mt-4 mb-3">
-		<ChatHistory {history} />
+	<section
+		id="chatHistory"
+		class="background-gradient flex-grow-1 mt-4 mb-3 d-flex flex-column justify-content-between scroll-container"
+		on:scroll={updateScrolling}
+	>
+		<span bind:this={before} class="before"></span>
+		{#await history then}
+			<div class="history-wrapper py-2">
+				<ChatHistory />
+			</div>
+		{/await}
+		{#if disabled}
+			<div class="loading-wrapper">
+				<Loader>Generando respuesta...</Loader>
+			</div>
+		{/if}
+		<span bind:this={after} class="after"></span>
 	</section>
 	<div class="mt-auto pb-3">
-		<ChatInput />
+		<ChatInput on:submit={handleChatInput} {disabled} {value} />
 	</div>
 </div>
 
@@ -49,26 +90,34 @@
 	#chatHistory {
 		max-height: 100%;
 		overflow-y: scroll;
-		&::-webkit-scrollbar {
-			width: 8px; /* Adjust width as desired */
-			height: 8px; /* Adjust height as desired */
-			background-color: transparent; /* Removes background color */
+		position: relative;
+		.before {
+			display: block;
+			width: 100%;
+			height: 25px;
+			position: absolute;
+			top: 0px;
+			background: linear-gradient(to bottom, #fff, rgba(255, 255, 255, 0) 100%);
+			z-index: 1;
 		}
-		/* Style the scrollbar track */
-		&::-webkit-scrollbar-track {
-			background-color: #f5f5f5; /* Set a light background for the track */
-			border-radius: 10px; /* Add rounded corners */
+		.after {
+			display: block;
+			width: 100%;
+			height: 25px;
+			position: absolute;
+			bottom: 0px;
+			background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #fff 100%);
+			z-index: 1;
 		}
-
-		/* Style the scrollbar thumb */
-		&::-webkit-scrollbar-thumb {
-			background-color: #cccccc; /* Set a light color for the thumb */
-			border-radius: 10px; /* Add rounded corners */
+	}
+	.loading-wrapper {
+		position: sticky;
+		z-index: 100;
+		bottom: -1px;
+		padding: {
+			bottom: 2px;
+			top: 80px;
 		}
-
-		/* Style the thumb on hover (optional) */
-		&::-webkit-scrollbar-thumb:hover {
-			background-color: #aaaaaa; /* Change color on hover (optional) */
-		}
+		background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #fff 40%);
 	}
 </style>

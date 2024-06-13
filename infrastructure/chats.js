@@ -1,5 +1,17 @@
 import { HumanMessage, AIMessage } from "@langchain/core/messages";
 
+function generateRandom12DigitInt() {
+	// Generate a random number between 10^11 (100 billion) and 10^12 (1 trillion) - 1 (exclusive)
+	// This ensures the number has 12 digits
+	const lowerBound = 10 ** 11;
+	const upperBound = 10 ** 12 - 1;
+	const randomInt =
+		Math.floor(Math.random() * (upperBound - lowerBound + 1)) + lowerBound;
+
+	// Convert the random integer to a string
+	return randomInt.toString();
+}
+
 class LangchainChat {
 	#chat_id;
 	#title;
@@ -16,7 +28,7 @@ class LangchainChat {
 	}
 	static async create(dataAccess, Message, history = []) {
 		return new this({
-			id: Math.random(),
+			id: generateRandom12DigitInt(),
 			Message,
 			history,
 			roles: [
@@ -53,6 +65,9 @@ class LangchainChat {
 		for (let msg of list) {
 			this.#history.push(msg);
 		}
+	}
+	get id() {
+		return this.#chat_id;
 	}
 	get title() {
 		return this.#title;

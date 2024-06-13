@@ -37,7 +37,7 @@ const Chat = {
 	save: async function (dataAccess, chat) {},
 	addMessages: function (...messages) {},
 	translator: {},
-	ID: "",
+	id: "",
 	title: "",
 	history: [],
 };

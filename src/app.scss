@@ -23,6 +23,7 @@ $font-family-sans-serif: $body-font-family, sans-serif;
 @import "bootstrap/scss/containers";
 @import "bootstrap/scss/nav";
 @import "bootstrap/scss/navbar";
+@import "bootstrap/scss/spinners";
 /* 7. Optionally include utilities API last to generate classes based on the Sass map in `_utilities.scss` */
 @import "bootstrap/scss/utilities/api";
 /* Add additional custom code here */
@@ -56,6 +57,10 @@ $font-family-sans-serif: $body-font-family, sans-serif;
 }
 :root {
 	--title-font-family: #{$title-font-family}, #{body-font-family}, sans-serif;
+	--blue-gradient: linear-gradient(120deg, #9cc6f4 0%, #4187d4 100%);
+	--red-gradient: linear-gradient(120deg, #f98081 0%, #ee5354 100%);
+	--green-gradient: linear-gradient(120deg, #a5ea99 0%, #58b748 100%);
+	--yellow-gradient: linear-gradient(120deg, #fff7b1 0%, #ffef5c 100%);
 }
 * {
 	box-sizing: border-box;
@@ -63,4 +68,65 @@ $font-family-sans-serif: $body-font-family, sans-serif;
 html,
 body {
 	height: 100%;
+}
+.scroll-container {
+	&::-webkit-scrollbar {
+		width: 8px; /* Adjust width as desired */
+		height: 8px; /* Adjust height as desired */
+		background-color: transparent; /* Removes background color */
+	}
+	/* Style the scrollbar track */
+	&::-webkit-scrollbar-track {
+		background-color: #f5f5f5; /* Set a light background for the track */
+		border-radius: 10px; /* Add rounded corners */
+	}
+
+	/* Style the scrollbar thumb */
+	&::-webkit-scrollbar-thumb {
+		background-color: #cccccc; /* Set a light color for the thumb */
+		border-radius: 10px; /* Add rounded corners */
+	}
+
+	/* Style the thumb on hover (optional) */
+	&::-webkit-scrollbar-thumb:hover {
+		background-color: #aaaaaa; /* Change color on hover (optional) */
+	}
+}
+.gradient-box {
+	position: relative;
+	box-sizing: border-box;
+	$border: 1px;
+	background-clip: padding-box; /* !importanté */
+	border: solid $border transparent; /* !importanté */
+	&::before {
+		content: "";
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		z-index: -1;
+		margin: -$border; /* !importanté */
+		border-radius: inherit; /* !importanté */
+	}
+	&.blue::before {
+		background: var(--blue-gradient);
+	}
+	&.red::before {
+		background: var(--red-gradient);
+	}
+	&.green::before {
+		background: var(--green-gradient);
+	}
+	&.yellow::before {
+		background: var(--yellow-gradient);
+	}
+}
+.btn.reset-button {
+	width: min(10vw, 60px);
+	height: min(10vw, 60px);
+	padding: 0.5rem;
+	// border-radius: 25%;
+	background: var(--blue-gradient);
+	border: transparent;
 }
