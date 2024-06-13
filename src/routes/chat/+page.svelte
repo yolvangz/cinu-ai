@@ -32,6 +32,10 @@
 			content: "Respuesta cualquiera",
 		},
 	];
+	function handleChatInput(event) {
+		const question = new FormData(event.target).get("chatInput").trim();
+		console.log(question);
+	}
 </script>
 
 <div
@@ -41,7 +45,7 @@
 		<ChatHistory {history} />
 	</section>
 	<div class="mt-auto pb-3">
-		<ChatInput />
+		<ChatInput on:submit={handleChatInput} />
 	</div>
 </div>
 

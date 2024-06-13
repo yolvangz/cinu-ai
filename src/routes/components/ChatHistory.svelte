@@ -5,7 +5,7 @@
 </script>
 
 <div class="d-flex flex-column px-3">
-	{#each history as message (message.id)}
+	{#each history as message}
 		<Message from={message.from}>{message.content}</Message>
 	{/each}
 </div>

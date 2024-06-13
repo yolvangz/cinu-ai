@@ -1,15 +1,24 @@
 <script>
 	import Send from "svelte-bootstrap-icons/lib/Send.svelte";
 	const buttonSize = 24;
+
+	let form;
+	let placeholder =
+		"Haga sus preguntas (Presione Shift + Enter para insertar una nueva línea)";
+
+	function handleKeyInput(event) {
+		if (event.keyCode === 13 && !event.shiftKey) form.requestSubmit();
+	}
 </script>
 
 <div class="card text-bg-light w-100 shadow">
 	<div class="card-body p-3">
-		<form on:submit|preventDefault class="d-flex">
+		<form on:submit|preventDefault bind:this={form} class="d-flex">
 			<textarea
 				class="form-control form-control-plaintext chat-input h-100 py-0"
 				name="chatInput"
-				placeholder="Haga sus preguntas"
+				{placeholder}
+				on:keydown={handleKeyInput}
 			></textarea>
 			<button
 				type="submit"
