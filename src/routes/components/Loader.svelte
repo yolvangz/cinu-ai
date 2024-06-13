@@ -35,3 +35,11 @@
 		>
 	</div>
 {/if}
+
+<style>
+	strong[role="status"] {
+		font-family: var(--title-font-family);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+</style>

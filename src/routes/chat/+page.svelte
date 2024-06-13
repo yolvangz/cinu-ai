@@ -1,5 +1,5 @@
 <script>
-	import { pageMeta } from "../stores";
+	import { history, pageMeta } from "../stores";
 	import ChatInput from "../components/ChatInput.svelte";
 	import ChatHistory from "../components/ChatHistory.svelte";
 	import Loader from "../components/Loader.svelte";
@@ -9,35 +9,35 @@
 	});
 
 	export let data;
-	let history = data.chat.history;
+	history.set(data.chat.history);
 	let disabled = false;
 	let before, after;
 
-	function addMessage(from, content) {
-		history = [...history, { from, content }];
-	}
-
-	function handleChatInput(event) {
+	async function handleChatInput(event) {
 		const question = new FormData(event.target).get("chatInput").trim();
 		if (disabled || question.length === 0) return;
 		// reset and block input
 		event.target.reset();
 		disabled = !disabled;
 		// update chat history
-		addMessage("user", question);
+		const lastHistory = $history;
+		history.addMessage("user", question);
 		// get answer
-		const response = fetch("/api/answer", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({ history, question }),
-		})
-			.then((res) => res.json())
-			.then((res) => {
-				addMessage(res.answer.from, res.answer.content);
-				disabled = !disabled;
+		try {
+			const response = await fetch("/api/answer", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ history: lastHistory, question }),
 			});
+			const res = await response.json();
+			history.addMessage(res.answer.from, res.answer.content);
+			disabled = !disabled;
+		} catch (error) {
+			console.error(error);
+			disabled = !disabled;
+		}
 	}
 	function updateScrolling(event) {
 		const container = event.target;
@@ -69,7 +69,7 @@
 		<span bind:this={before} class="before"></span>
 		{#await history then}
 			<div class="history-wrapper py-2">
-				<ChatHistory {history} />
+				<ChatHistory />
 			</div>
 		{/await}
 		{#if disabled}

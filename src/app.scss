@@ -57,6 +57,10 @@ $font-family-sans-serif: $body-font-family, sans-serif;
 }
 :root {
 	--title-font-family: #{$title-font-family}, #{body-font-family}, sans-serif;
+	--blue-gradient: linear-gradient(120deg, #9cc6f4 0%, #4187d4 100%);
+	--red-gradient: linear-gradient(120deg, #f98081 0%, #ee5354 100%);
+	--green-gradient: linear-gradient(120deg, #a5ea99 0%, #58b748 100%);
+	--yellow-gradient: linear-gradient(120deg, #fff7b1 0%, #ffef5c 100%);
 }
 * {
 	box-sizing: border-box;
@@ -87,4 +91,44 @@ body {
 	&::-webkit-scrollbar-thumb:hover {
 		background-color: #aaaaaa; /* Change color on hover (optional) */
 	}
+}
+.gradient-box {
+	display: flex;
+	align-items: center;
+	position: relative;
+	box-sizing: border-box;
+	$border: 1px;
+	background-clip: padding-box; /* !importanté */
+	border: solid $border transparent; /* !importanté */
+	&::before {
+		content: "";
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		z-index: -1;
+		margin: -$border; /* !importanté */
+		border-radius: inherit; /* !importanté */
+	}
+	&.blue::before {
+		background: var(--blue-gradient);
+	}
+	&.red::before {
+		background: var(--red-gradient);
+	}
+	&.green::before {
+		background: var(--green-gradient);
+	}
+	&.yellow::before {
+		background: var(--yellow-gradient);
+	}
+}
+.btn.reset-button {
+	width: min(10vw, 60px);
+	height: min(10vw, 60px);
+	padding: 0.5rem;
+	// border-radius: 25%;
+	background: var(--blue-gradient);
+	border: transparent;
 }

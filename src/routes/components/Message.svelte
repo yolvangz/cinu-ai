@@ -1,15 +1,15 @@
 <script>
 	export let from;
 	const direction = from === "user" ? "right" : "left";
-	const colors = ["primary", "warning", "danger", "success"];
+	const colors = ["red", "blue", "yellow", "green"];
 	function randomColor() {
-		return `border-${colors[Math.floor(Math.random() * colors.length)]}`;
+		return colors[Math.floor(Math.random() * colors.length)];
 	}
 </script>
 
 {#if from === "bot"}
 	<div class="message {direction} mb-4">
-		<article class="message-body border {randomColor()} p-3">
+		<article class="message-body gradient-box {randomColor()} p-3">
 			<slot />
 		</article>
 	</div>

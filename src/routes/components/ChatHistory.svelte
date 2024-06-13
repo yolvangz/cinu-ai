@@ -1,7 +1,7 @@
 <script>
+	import { history } from "../stores";
 	import Message from "./Message.svelte";
 
-	export let history = [];
 	function contentParse(text) {
 		let openStrong = false;
 		const escapeMap = {
@@ -16,8 +16,8 @@
 	}
 </script>
 
-<div class="d-flex flex-column px-3">
-	{#each history as message (message)}
+<div class="d-flex flex-column px-3 py-2">
+	{#each $history as message (message)}
 		<Message from={message.from}>{@html contentParse(message.content)}</Message>
 	{/each}
 </div>
