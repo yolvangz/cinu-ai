@@ -131,7 +131,7 @@ dist
 .vscode
 output.txt
 faiss_index
-documents/
+tests/infrastructure/bot/documents/
 vectorstore
 !tests/infrastructure/faiss/documents/
 .DS_Store
