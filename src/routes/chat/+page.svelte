@@ -1,6 +1,7 @@
 <script>
 	import DOMPurify from "isomorphic-dompurify";
 	import { history, pageMeta } from "../stores";
+	import { Timeout } from "../functions";
 	import { beforeUpdate, afterUpdate } from "svelte";
 	import ChatInput from "../components/ChatInput.svelte";
 	import ChatHistory from "../components/ChatHistory.svelte";
@@ -35,12 +36,14 @@
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({ history: lastHistory, question }),
+				signal: Timeout(20).signal,
 			});
 			const res = await response.json();
 			history.addMessage(res.answer.from, res.answer.content);
 			disabled = !disabled;
 		} catch (error) {
 			console.error(error);
+			window.alert("Hubo un error en el servidor. Por favor, intenta de nuevo");
 			history.removeLastMessage();
 			value = question;
 			disabled = !disabled;
