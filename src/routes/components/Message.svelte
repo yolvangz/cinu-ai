@@ -32,10 +32,11 @@
 			background-color: var(--bs-body-bg);
 			box-shadow: var(--bs-box-shadow-sm);
 			border-radius: var(--bs-border-radius-xl);
-			min-height: 100px;
+			min-height: 20px;
 			position: relative;
-			max-width: 70%;
-			flex-grow: 1;
+			@media screen and (min-width: 992px) {
+				max-width: 70%;
+			}
 		}
 	}
 

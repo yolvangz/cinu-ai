@@ -1,6 +1,10 @@
 <script>
 	import DOMPurify from "isomorphic-dompurify";
 	import { history, pageMeta } from "../stores";
+	import {
+		beforeUpdate,
+		afterUpdate
+	} from 'svelte';
 	import ChatInput from "../components/ChatInput.svelte";
 	import ChatHistory from "../components/ChatHistory.svelte";
 	import Loader from "../components/Loader.svelte";
@@ -12,8 +16,8 @@
 	export let data;
 	history.set(data.chat.history);
 	let value;
-	let disabled = false;
-	let before, after;
+	let disabled = false, autoscroll = false;
+	let chatElement, before, after;
 
 	async function handleChatInput(event) {
 		const question = new FormData(event.target).get("chatInput").trim();
@@ -58,6 +62,17 @@
 		before.style.top = `${newPosition}px`;
 		after.style.bottom = `-${newPosition}px`;
 	}
+
+	beforeUpdate(() => {
+		if (chatElement) {
+			const scrollableDistance = chatElement.scrollHeight - chatElement.offsetHeight;
+			autoscroll = chatElement.scrollTop > scrollableDistance - 20;
+		}
+	});
+
+	afterUpdate(() => {
+		if (autoscroll) chatElement.scrollTo(0, chatElement.scrollHeight);
+	});
 </script>
 
 <div
@@ -67,6 +82,7 @@
 		id="chatHistory"
 		class="background-gradient flex-grow-1 mt-4 mb-3 d-flex flex-column justify-content-between scroll-container"
 		on:scroll={updateScrolling}
+		bind:this={chatElement}
 	>
 		<span bind:this={before} class="before"></span>
 		{#await history then}

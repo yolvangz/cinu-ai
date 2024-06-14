@@ -39,6 +39,10 @@ export async function POST({ request }) {
 		loader,
 		false
 	);
+	if (body.history.length > 0) {
+		const history = body.history.map((m) => new app.Message(m.from, m.content));
+		chatbot.addMessages(...history);
+	}
 	// return answer
 	const question = new app.Message("user", body.question);
 	const answer = await chatbot.answer(question);
