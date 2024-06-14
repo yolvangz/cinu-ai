@@ -1,7 +1,7 @@
 <script>
 	import { history } from "../stores";
 	import Button from "./Button.svelte";
-	import PlusLg from "svelte-bootstrap-icons/lib/PlusLg.svelte";
+	import EraserFill from "svelte-bootstrap-icons/lib/EraserFill.svelte";
 	export let disabled;
 	export let size = 36;
 </script>
@@ -15,6 +15,6 @@
 	{disabled}
 	on:click={() => history.reset()}
 >
-	<PlusLg width={size} height={size} />
+	<EraserFill width={size} height={size} />
 	<span class="visually-hidden">Nueva conversación</span>
 </Button>
