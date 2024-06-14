@@ -1,10 +1,7 @@
 <script>
 	import DOMPurify from "isomorphic-dompurify";
 	import { history, pageMeta } from "../stores";
-	import {
-		beforeUpdate,
-		afterUpdate
-	} from 'svelte';
+	import { beforeUpdate, afterUpdate } from "svelte";
 	import ChatInput from "../components/ChatInput.svelte";
 	import ChatHistory from "../components/ChatHistory.svelte";
 	import Loader from "../components/Loader.svelte";
@@ -16,7 +13,8 @@
 	export let data;
 	history.set(data.chat.history);
 	let value;
-	let disabled = false, autoscroll = false;
+	let disabled = false,
+		autoscroll = false;
 	let chatElement, before, after;
 
 	async function handleChatInput(event) {
@@ -65,13 +63,15 @@
 
 	beforeUpdate(() => {
 		if (chatElement) {
-			const scrollableDistance = chatElement.scrollHeight - chatElement.offsetHeight;
+			const scrollableDistance =
+				chatElement.scrollHeight - chatElement.offsetHeight;
 			autoscroll = chatElement.scrollTop > scrollableDistance - 20;
 		}
 	});
 
 	afterUpdate(() => {
 		if (autoscroll) chatElement.scrollTo(0, chatElement.scrollHeight);
+		if ($history.length === 0) chatElement.scrollTo(0, 0);
 	});
 </script>
 
