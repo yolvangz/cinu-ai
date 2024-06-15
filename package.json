@@ -58,7 +58,7 @@
 		"langchain": "^0.1.37",
 		"mammoth": "^1.7.2",
 		"marked": "^13.0.0",
-		"pdf-parse": "^1.1.1",
+		"pdfjs-dist": "^4.3.136",
 		"postcss": "^8.4.38",
 		"postcss-scss": "^4.0.9"
 	},
@@ -67,6 +67,7 @@
 		"@neoconfetti/svelte": "^1.0.0",
 		"@popperjs/core": "^2.11.8",
 		"@sveltejs/adapter-auto": "^3.0.0",
+		"@sveltejs/adapter-vercel": "^5.3.2",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
 		"@types/eslint": "^8.56.7",

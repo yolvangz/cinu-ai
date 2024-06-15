@@ -34,6 +34,7 @@
 			border-radius: var(--bs-border-radius-xl);
 			min-height: 20px;
 			position: relative;
+			line-break: anywhere;
 			@media screen and (min-width: 992px) {
 				max-width: 70%;
 			}
