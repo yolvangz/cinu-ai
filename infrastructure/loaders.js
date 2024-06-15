@@ -10,7 +10,7 @@ import { TextLoader } from "langchain/document_loaders/fs/text";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 // PDFparse aditional dependencies
 import * as fsPromise from "node:fs/promises";
-import pdfParse from "pdf-parse";
+import * as PDFJS from "pdfjs-dist/legacy/build/pdf.mjs";
 
 class PDFParse {
 	constructor(settings) {
@@ -19,44 +19,50 @@ class PDFParse {
 		this.chunkOverlap = settings.chunkOverlap;
 	}
 	/**
-	 * Asynchronously reads the content of a file at the specified URI and converts it into a Buffer.
-	 *
-	 * @param {string} uri - The URI of the file to read.
-	 * @return {Promise<Buffer>} A promise that resolves with the content of the file as a Buffer.
-	 */
-	async databuffer(uri) {
-		try {
-			return await fsPromise.readFile(uri, { encoding: null });
-		} catch (err) {
-			console.error(
-				err.code === "ENOENT"
-					? new Error(`Error: archivo ${uri} no encontrado`)
-					: new Error(`Error al leer el archivo: ${err}`)
-			);
-		}
-	}
-	/**
 	 * Asynchronously reads a URI, processes the data (specifically for PDF files), and returns the trimmed lines.
 	 *
 	 * @param {string} uri - The URI to read (supports only PDF files)
 	 * @return {string} The processed and trimmed data
 	 */
 	async readFile(uri) {
-		const info = await this.databuffer(uri);
-		const rawData = await pdfParse(info);
-		const trimData = rawData.text.trim();
-		const lines = trimData.split(/\s*\n\s*/);
-		const trimmedLines = lines.map((line) => line.trim());
-		return trimmedLines.join("\n");
+		try {
+			// Load the PDF document
+			const pdf = await PDFJS.getDocument(uri).promise;
+
+			// Get the number of pages
+			const numPages = pdf.numPages;
+
+			// Create an empty array to store extracted text
+			const extractedText = [];
+
+			// Extract text from each page
+			for (let i = 1; i <= numPages; i++) {
+				const page = await pdf.getPage(i);
+				const content = await page.getTextContent();
+
+				// Combine page text into a single string
+				const pageText = content.items
+					.map((item) => item.str)
+					.filter((item) => item.length > 0)
+					.join("\n");
+				extractedText.push(pageText);
+			}
+			// Return the combined text from all pages
+			const trimmedLines = extractedText.map((line) => line.trim());
+			return trimmedLines.join("\n\n");
+		} catch (err) {
+			console.error("Error extracting text:", err);
+			throw err; // Handle errors gracefully, return empty string or throw
+		}
 	}
 	async readFolder(uri) {
 		try {
 			const exists = await this.checkLocation(uri);
 			if (!exists) throw new Error(`no existe el directorio ${uri}`);
-			const files = await fsPromise.readdir(uri);
-			const readFiles = files.map((fileName) => {
-				return path.join(uri, fileName);
-			});
+			const files = (await fsPromise.readdir(uri)).filter((filename) =>
+				filename.endsWith(".pdf")
+			);
+			const readFiles = files.map((fileName) => path.join(uri, fileName));
 			return await readFiles.map(async (file) => await readFile(file));
 		} catch (err) {
 			console.error(err);
@@ -113,7 +119,10 @@ class DocumentsLoader {
 		}
 	}
 	#pdf(path) {
-		return new PDFLoader(path, { splitPages: false });
+		return new PDFLoader(path, {
+			splitPages: false,
+			pdfjs: () => import("pdfjs-dist/legacy/build/pdf.mjs"),
+		});
 	}
 	#docx(path) {
 		return new DocxLoader(path);
