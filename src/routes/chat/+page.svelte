@@ -2,7 +2,7 @@
 	import DOMPurify from "isomorphic-dompurify";
 	import { history, pageMeta } from "../stores";
 	import { Timeout } from "../functions";
-	import { beforeUpdate, afterUpdate } from "svelte";
+	import { onMount, beforeUpdate, afterUpdate } from "svelte";
 	import ChatInput from "../components/ChatInput.svelte";
 	import ChatHistory from "../components/ChatHistory.svelte";
 	import Loader from "../components/Loader.svelte";
@@ -14,47 +14,50 @@
 	export let data;
 	history.set(data.chat.history);
 	let value;
-	let disabled = false,
+	let ready = false,
+		answering = false,
 		autoscroll = false;
 	let chatElement, before, after;
+	$: disabled = !ready || answering;
 
 	async function recursiveFetch(question, lastHistory) {
-			const response = await fetch("/api/answer", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({ history: lastHistory, question }),
-				signal: Timeout(30).signal,
-			});
-			const res = await response.json();
-			console.log(res, Boolean(!res.error && res.body.answer.content));
-			return (!res.error && res.body.answer.content) ? res : recursiveFetch(question, lastHistory);
-		}
+		const response = await fetch("/api/answer", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ history: lastHistory, question }),
+			signal: Timeout(30).signal,
+		});
+		const res = await response.json();
+		console.log(res, Boolean(!res.error && res.body.answer.content));
+		return !res.error && res.body.answer.content
+			? res
+			: recursiveFetch(question, lastHistory);
+	}
 	async function handleChatInput(event) {
 		const question = new FormData(event.target).get("chatInput").trim();
 		const validatingQuestion = DOMPurify.sanitize(question);
 		if (disabled || validatingQuestion.length === 0) return;
 		// reset and block input
 		event.target.reset();
-		disabled = !disabled;
+		answering = !answering;
 		// update chat history
 		const lastHistory = $history;
 		history.addMessage("user", question);
 		// get answer
-		
 		try {
 			const res = await recursiveFetch(question, lastHistory);
 			if (res.error) throw new Error(res.error.message);
 			console.log(res);
 			history.addMessage(res.body.answer.from, res.body.answer.content);
-			disabled = !disabled;
+			answering = !answering;
 		} catch (error) {
 			console.error(error);
 			window.alert("Hubo un error en el servidor. Por favor, intenta de nuevo");
 			history.removeLastMessage();
 			value = question;
-			disabled = !disabled;
+			answering = !answering;
 		}
 	}
 	function updateScrolling(event) {
@@ -71,6 +74,8 @@
 		before.style.top = `${newPosition}px`;
 		after.style.bottom = `-${newPosition}px`;
 	}
+
+	onMount(() => (ready = true));
 
 	beforeUpdate(() => {
 		if (chatElement) {
@@ -101,7 +106,7 @@
 				<ChatHistory />
 			</div>
 		{/await}
-		{#if disabled}
+		{#if answering}
 			<div class="loading-wrapper">
 				<Loader>Generando respuesta...</Loader>
 			</div>
