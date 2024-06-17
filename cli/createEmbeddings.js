@@ -1,4 +1,4 @@
-import * as app from "../core/app.js";
+const app = require("../src/core/app.js");
 
 const main = async () => {
 	const loader = app.getFileLoader();

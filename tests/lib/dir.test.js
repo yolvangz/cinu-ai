@@ -1,10 +1,7 @@
-import * as dir from "../../lib/dir.js";
-import * as path from "node:path";
-import { fileURLToPath } from "url";
-import * as dotenv from "dotenv";
+const dir = require("../../lib/dir.js");
+const dotenv = require("dotenv");
 dotenv.config();
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 test("Getting parent folder from this script", () =>
 	expect(dir.parent(__dirname)).toBe("/home/yolvangz/projects/cinu-ai/tests"));
 
