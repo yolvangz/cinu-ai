@@ -6,7 +6,7 @@
 	"insertPragma": false,
 	"singleAttributePerLine": false,
 	"bracketSameLine": false,
-
+	"jsxBracketSameLine": false,
 	"jsxSingleQuote": false,
 	"printWidth": 80,
 	"proseWrap": "preserve",
@@ -19,32 +19,5 @@
 	"useTabs": true,
 	"embeddedLanguageFormatting": "auto",
 	"vueIndentScriptAndStyle": false,
-	"parser": "babel",
-	"plugins": ["prettier-plugin-svelte"],
-	"overrides": [
-		{
-			"files": "*.svelte",
-			"options": {
-				"parser": "svelte"
-			}
-		},
-		{
-			"files": "*.json",
-			"options": {
-				"parser": "json"
-			}
-		},
-		{
-			"files": "*.scss",
-			"options": {
-				"parser": "scss"
-			}
-		},
-		{
-			"files": "*.html",
-			"options": {
-				"parser": "html"
-			}
-		}
-	]
+	"parser": "babel"
 }
