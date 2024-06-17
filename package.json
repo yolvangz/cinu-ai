@@ -6,6 +6,7 @@
 	"scripts": {
 		"env": "node cli/config-env.js",
 		"cli": "node cli/cli.js",
+		"embedding": "node cli/embedding-search.js",
 		"create-embeddings": "node cli/createEmbeddings.js",
 		"test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
 		"dev": "vite dev",
@@ -67,7 +68,7 @@
 		"@neoconfetti/svelte": "^1.0.0",
 		"@popperjs/core": "^2.11.8",
 		"@sveltejs/adapter-auto": "^3.0.0",
-		"@sveltejs/adapter-vercel": "^5.3.2",
+		"@sveltejs/adapter-node": "^5.1.1",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
 		"@types/eslint": "^8.56.7",

@@ -54,7 +54,7 @@ class Faiss {
 	}
 	#validateQuery(query) {
 		try {
-			if (typeof query !== "string") throw new error("query is not a string");
+			if (typeof query !== "string") throw new Error("query is not a string");
 		} catch (err) {
 			console.error(err.message);
 			return false;
