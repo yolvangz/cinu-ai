@@ -7,7 +7,6 @@
 		"env": "node cli/config-env.js",
 		"cli": "node cli/cli.js",
 		"embedding": "node cli/embedding-search.js",
-		"create-embeddings": "node cli/createEmbeddings.js",
 		"test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
 		"dev": "vite dev",
 		"build": "vite build",
