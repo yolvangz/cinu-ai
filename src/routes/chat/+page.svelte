@@ -18,6 +18,19 @@
 		autoscroll = false;
 	let chatElement, before, after;
 
+	async function recursiveFetch(question, lastHistory) {
+			const response = await fetch("/api/answer", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ history: lastHistory, question }),
+				signal: Timeout(30).signal,
+			});
+			const res = await response.json();
+			console.log(res, Boolean(!res.error && res.body.answer.content));
+			return (!res.error && res.body.answer.content) ? res : recursiveFetch(question, lastHistory);
+		}
 	async function handleChatInput(event) {
 		const question = new FormData(event.target).get("chatInput").trim();
 		const validatingQuestion = DOMPurify.sanitize(question);
@@ -29,17 +42,12 @@
 		const lastHistory = $history;
 		history.addMessage("user", question);
 		// get answer
+		
 		try {
-			const response = await fetch("/api/answer", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({ history: lastHistory, question }),
-				signal: Timeout(20).signal,
-			});
-			const res = await response.json();
-			history.addMessage(res.answer.from, res.answer.content);
+			const res = await recursiveFetch(question, lastHistory);
+			if (res.error) throw new Error(res.error.message);
+			console.log(res);
+			history.addMessage(res.body.answer.from, res.body.answer.content);
 			disabled = !disabled;
 		} catch (error) {
 			console.error(error);
