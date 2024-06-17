@@ -1,0 +1,8 @@
+User: Misión de la UNEFA
+Model: Formar a través de la docencia, la investigación y la extensión, ciudadanos corresponsables con la seguridad y Defensa Integral de la Nación, comprometidos con la Revolución Bolivariana, con competencias emancipadoras y humanistas necesarias para sustentar los planes de desarrollo del país, promoviendo la producción y el intercambio de saberes, como mecanismo de integración latinoamericana y caribeña.
+---
+User: Visión de la UNEFA
+Model: Ser la primera universidad socialista, reconocida por su Excelencia Educativa en el territorio nacional e internacional, líder en los saberes humanistas, científicos, tecnológicos y militares, inspirada en el ideario bolivariano.
+---
+User: Valores de la UNEFA
+Model: Excelencia, Disciplina, Honestidad, Creatividad, Igualdad, Justicia, Solidaridad, Dignidad, Patriotismo, Humanismo, Laboriosidad.

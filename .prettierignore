@@ -1,0 +1,21 @@
+# Ignore files for PNPM, NPM and YARN
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# Ignore project information folders
+documents
+vectorstore
+faiss_index
+*.pdf
+*.docx
+*.txt
+images
+*.png
+.prettierignore
+.gitignore
+*.md
+LICENSE
+.npmrc
+*.svg
+*.woff2

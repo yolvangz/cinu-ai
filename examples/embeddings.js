@@ -1,13 +1,11 @@
 import * as app from "../core/app.js";
 
-const main = async () => {
+const question = "Qué es el álgebra?";
+
+(async () => {
 	const loader = app.getFileLoader();
 	const model = app.getModels().getEmbeddingModel();
 	const embedding = await app.getEmbedding(loader, model);
-	console.log(embedding);
-};
-
-main().then(() => {
-	console.log("Embedding database created.");
-	process.exit();
-});
+	const response = await embedding.search(question);
+	console.log(response);
+})();
