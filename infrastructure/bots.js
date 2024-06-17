@@ -56,7 +56,7 @@ class LangchainBot {
 			["user", "{input}"],
 			[
 				"user",
-				"Given the above conversation, generate a search query to look up in order to get information relevant to the conversation",
+				"Basada en la conversación de arriba, genera una consulta consulta para buscar información relevante a la converación",
 			],
 		]);
 		const retriever = this.#retriever.storage.asRetriever();
