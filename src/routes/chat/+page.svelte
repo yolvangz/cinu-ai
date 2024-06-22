@@ -30,7 +30,6 @@
 			signal: Timeout(30).signal,
 		});
 		const res = await response.json();
-		console.log(res, Boolean(!res.error && res.body.answer.content));
 		return !res.error && res.body.answer.content
 			? res
 			: recursiveFetch(question, lastHistory);
@@ -49,7 +48,6 @@
 		try {
 			const res = await recursiveFetch(question, lastHistory);
 			if (res.error) throw new Error(res.error.message);
-			console.log(res);
 			history.addMessage(res.body.answer.from, res.body.answer.content);
 			answering = !answering;
 		} catch (error) {

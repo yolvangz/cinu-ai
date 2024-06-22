@@ -1,5 +1,5 @@
 import { json } from "@sveltejs/kit";
-import * as app from "../../../../core/app";
+import * as app from "$core/app";
 
 function destructureMessage(message) {
 	return {
