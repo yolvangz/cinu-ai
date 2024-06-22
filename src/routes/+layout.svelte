@@ -38,7 +38,12 @@
 	<footer class="fixed-bottom">
 		<div class="container">
 			<p class="text-center">
-				Hecho por <a target="blank" href="https://github.com/yolvangz">@yolvangz</a> y <a target="blank" href="https://github.com/Luis-Marval">@Luis-Marval</a>. UNEFA 2024.
+				Hecho por <a target="blank" href="https://github.com/yolvangz"
+					>@yolvangz</a
+				>
+				y
+				<a target="blank" href="https://github.com/Luis-Marval">@Luis-Marval</a
+				>. UNEFA 2024.
 			</p>
 		</div>
 	</footer>
