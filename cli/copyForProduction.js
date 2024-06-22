@@ -2,35 +2,31 @@ import { mkdirSync, readdirSync, copyFileSync } from "node:fs";
 import { join } from "node:path";
 
 export default function copyForProduction() {
+	const buildsDir = ["./build/server", "./.svelte-kit/output/server"];
+	const botFiles = [
+		"bot_examples.txt",
+		"bot_instructions.txt",
+		"bot_persona.txt",
+	];
 	const sourceDir = "./faiss_index";
-	const destDir = "./build/server/faiss_index"; // Adjust destination as needed
-	const docsDir = "./build/server/faiss_index"; // Adjust destination as needed
-	const destDocsDir = "./build/server/documents";
+	for (const build of buildsDir) {
+		const destDir = join(build, "faiss_index"); // Adjust destination as needed
 
-	// Create the destination directory if it doesn't exist
-	mkdirSync(destDir, { recursive: true });
-	readdirSync(sourceDir).forEach((file) => {
-		const sourcePath = join(sourceDir, file);
-		const destPath = join(destDir, file);
-		copyFileSync(sourcePath, destPath);
-	});
-	console.log("Copied faiss_index files to build/server");
+		// Create the destination directory if it doesn't exist
+		mkdirSync(destDir, { recursive: true });
+		readdirSync(sourceDir).forEach((file) => {
+			const sourcePath = join(sourceDir, file);
+			const destPath = join(destDir, file);
+			copyFileSync(sourcePath, destPath);
+		});
+		console.log(`Copied faiss_index files to ${build}`);
 
-	mkdirSync(destDocsDir, { recursive: true });
-	readdirSync(docsDir).forEach((file) => {
-		const sourcePath = join(docsDir, file);
-		const destPath = join(destDocsDir, file);
-		copyFileSync(sourcePath, destPath);
-	});
-	console.log("Copied documents files to build/server");
-
-	// Copy other files
-	["bot_examples.txt", "bot_instructions.txt", "bot_persona.txt"].forEach(
-		(file) => {
+		// Copy other files
+		for (const file of botFiles) {
 			const sourcePath = join("./", file);
-			const destPath = join("./build/server", file);
+			const destPath = join(build, file);
 			copyFileSync(sourcePath, destPath);
 		}
-	);
-	console.log("Copied bot files to build/server");
+		console.log(`Copied bot files to ${build}`);
+	}
 }

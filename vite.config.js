@@ -2,8 +2,6 @@ import { build } from "esbuild";
 import { sveltekit } from "@sveltejs/kit/vite";
 import { defineConfig } from "vite";
 
-let once = false;
-
 export default defineConfig({
 	build: {
 		rollupOptions: {
@@ -13,17 +11,13 @@ export default defineConfig({
 	plugins: [
 		sveltekit(),
 		{
-			name: "create-embeddings",
+			name: "bot-config",
 			apply: "build",
 			async buildStart() {
-				await build({ write: false });
 				await import("./cli/createEmbeddings.js").then((m) => m.default());
 			},
-		},
-		{
-			name: "copy-files",
-			apply: "build",
-			async buildEnd() {
+			async closeBundle() {
+				await build({ write: false });
 				await import("./cli/copyForProduction.js").then((m) => m.default());
 			},
 		},
