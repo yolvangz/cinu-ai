@@ -52,6 +52,7 @@
 		"@langchain/community": "^0.0.57",
 		"@langchain/core": "^0.1.63",
 		"@langchain/google-genai": "^0.0.13",
+		"braces": "^3.0.3",
 		"dotenv": "^16.4.5",
 		"faiss-node": "^0.5.1",
 		"isomorphic-dompurify": "^2.12.0",
