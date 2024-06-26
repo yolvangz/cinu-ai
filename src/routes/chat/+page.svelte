@@ -27,7 +27,7 @@
 				"Content-Type": "application/json",
 			},
 			body: JSON.stringify({ history: lastHistory, question }),
-			signal: Timeout(30).signal,
+			signal: Timeout(60).signal,
 		});
 		const res = await response.json();
 		return !res.error && res.body.answer.content

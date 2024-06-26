@@ -214,4 +214,4 @@ class DocumentsLoader {
 	}
 }
 
-export { DocumentsLoader, PDFParse };
+export { DocumentsLoader };

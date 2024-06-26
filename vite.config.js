@@ -6,15 +6,19 @@ export default defineConfig({
 	build: {
 		rollupOptions: {
 			write: false,
-		}
+		},
 	},
 	plugins: [
 		sveltekit(),
 		{
-			name: "copy-files",
-			buildStart() {
-				build({ write: false });
-				require("./cli/copyForProduction.js");
+			name: "bot-config",
+			apply: "build",
+			async buildStart() {
+				await import("./cli/createEmbeddings.js").then((m) => m.default());
+			},
+			async closeBundle() {
+				await build({ write: false });
+				await import("./cli/copyForProduction.js").then((m) => m.default());
 			},
 		},
 	],
